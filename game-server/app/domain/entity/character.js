@@ -112,12 +112,12 @@ Character.prototype.attack = function(target, skillId) {
 
 	// utils.myPrint('attack ', this.x, this.y, target.x, target.y)
 	var result = skill.use(this, target);
-	// this.emit('attack', {
-	// 	attacker: this,
-	// 	target: target,
-	// 	skillId: skillId,
-	// 	result: result
-	// });
+	this.emit('attack', {
+		attacker: this,
+		target: target,
+		skillId: skillId,
+		result: result
+	});
 
 	return result;
 };

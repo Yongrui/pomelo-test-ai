@@ -560,3 +560,27 @@
 [2018-02-07 20:48:49.683] [INFO] pomelo-admin - [32m[ConsoleService] [39mtry to connect master: "master", "127.0.0.1", 3005
 [2018-02-07 20:48:50.083] [INFO] pomelo-admin - [32m[ConsoleService] [39mtry to connect master: "arena", "127.0.0.1", 3005
 [2018-02-07 20:48:50.158] [INFO] pomelo-admin - [32m[ConsoleService] [39mtry to connect master: "connector", "127.0.0.1", 3005
+[2018-02-07 22:12:25.231] [INFO] pomelo-admin - [32m[MasterAgent] [39mclient user : admin login to master
+[2018-02-07 22:12:25.238] [DEBUG] pomelo-admin - [36m[MasterSocket] [39mdisconnect connector-server-1 connector {"main":"F:\\pomelo\\pomelo-test\\game-server\\app.js","env":"development","id":"connector-server-1","host":"127.0.0.1","port":3150,"clientHost":"127.0.0.1","clientPort":3010,"frontend":"true","serverType":"connector","pid":46184}
+[2018-02-07 22:12:25.260] [DEBUG] pomelo-admin - [36m[MasterSocket] [39mdisconnect arena-server-1 arena {"main":"F:\\pomelo\\pomelo-test\\game-server\\app.js","env":"development","id":"arena-server-1","host":"127.0.0.1","port":3250,"serverType":"arena","pid":46856}
+[2018-02-07 22:12:29.765] [INFO] pomelo-admin - [32m[MqttServer] [39m[MqttServer] listen on 3005
+[2018-02-07 22:12:29.782] [INFO] pomelo-admin - [32m[ConsoleService] [39mtry to connect master: "master", "127.0.0.1", 3005
+[2018-02-07 22:12:30.158] [INFO] pomelo-admin - [32m[ConsoleService] [39mtry to connect master: "arena", "127.0.0.1", 3005
+[2018-02-07 22:12:30.242] [INFO] pomelo-admin - [32m[ConsoleService] [39mtry to connect master: "connector", "127.0.0.1", 3005
+[2018-02-07 22:15:28.274] [INFO] pomelo-admin - [32m[MasterAgent] [39mclient user : admin login to master
+[2018-02-07 22:15:28.280] [DEBUG] pomelo-admin - [36m[MasterSocket] [39mdisconnect arena-server-1 arena {"main":"F:\\pomelo\\pomelo-test\\game-server\\app.js","env":"development","id":"arena-server-1","host":"127.0.0.1","port":3250,"serverType":"arena","pid":46896}
+[2018-02-07 22:15:28.282] [DEBUG] pomelo-admin - [36m[MasterSocket] [39mdisconnect connector-server-1 connector {"main":"F:\\pomelo\\pomelo-test\\game-server\\app.js","env":"development","id":"connector-server-1","host":"127.0.0.1","port":3150,"clientHost":"127.0.0.1","clientPort":3010,"frontend":"true","serverType":"connector","pid":46996}
+[2018-02-08 01:53:28.610] [INFO] pomelo-admin - [32m[MqttServer] [39m[MqttServer] listen on 3005
+[2018-02-08 01:53:28.627] [INFO] pomelo-admin - [32m[ConsoleService] [39mtry to connect master: "master", "127.0.0.1", 3005
+[2018-02-08 01:53:29.041] [INFO] pomelo-admin - [32m[ConsoleService] [39mtry to connect master: "arena", "127.0.0.1", 3005
+[2018-02-08 01:53:29.131] [INFO] pomelo-admin - [32m[ConsoleService] [39mtry to connect master: "connector", "127.0.0.1", 3005
+[2018-02-08 02:18:03.123] [INFO] pomelo-admin - [32m[MasterAgent] [39mclient user : admin login to master
+[2018-02-08 02:18:03.129] [DEBUG] pomelo-admin - [36m[MasterSocket] [39mdisconnect arena-server-1 arena {"main":"F:\\pomelo\\pomelo-test\\game-server\\app.js","env":"development","id":"arena-server-1","host":"127.0.0.1","port":3250,"serverType":"arena","pid":11812}
+[2018-02-08 02:18:03.143] [DEBUG] pomelo-admin - [36m[MasterSocket] [39mdisconnect connector-server-1 connector {"main":"F:\\pomelo\\pomelo-test\\game-server\\app.js","env":"development","id":"connector-server-1","host":"127.0.0.1","port":3150,"clientHost":"127.0.0.1","clientPort":3010,"frontend":"true","serverType":"connector","pid":18008}
+[2018-02-08 02:18:29.787] [INFO] pomelo-admin - [32m[MqttServer] [39m[MqttServer] listen on 3005
+[2018-02-08 02:18:29.811] [INFO] pomelo-admin - [32m[ConsoleService] [39mtry to connect master: "master", "127.0.0.1", 3005
+[2018-02-08 02:18:30.309] [INFO] pomelo-admin - [32m[ConsoleService] [39mtry to connect master: "arena", "127.0.0.1", 3005
+[2018-02-08 02:18:30.386] [INFO] pomelo-admin - [32m[ConsoleService] [39mtry to connect master: "connector", "127.0.0.1", 3005
+[2018-02-08 02:20:40.088] [INFO] pomelo-admin - [32m[MasterAgent] [39mclient user : admin login to master
+[2018-02-08 02:20:40.093] [DEBUG] pomelo-admin - [36m[MasterSocket] [39mdisconnect arena-server-1 arena {"main":"F:\\pomelo\\pomelo-test\\game-server\\app.js","env":"development","id":"arena-server-1","host":"127.0.0.1","port":3250,"serverType":"arena","pid":6848}
+[2018-02-08 02:20:40.095] [DEBUG] pomelo-admin - [36m[MasterSocket] [39mdisconnect connector-server-1 connector {"main":"F:\\pomelo\\pomelo-test\\game-server\\app.js","env":"development","id":"connector-server-1","host":"127.0.0.1","port":3150,"clientHost":"127.0.0.1","clientPort":3010,"frontend":"true","serverType":"connector","pid":16124}

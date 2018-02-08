@@ -23,7 +23,7 @@ exp.createArena = function (data) {
 		x: 10,
 		y: 10,
 		range: 40,
-		hp: 5,
+		hp: 10,
 		maxHp: 40,
 		walkSpeed: 50,
 		attackSpeed: 1
@@ -36,7 +36,7 @@ exp.createArena = function (data) {
 		x: 400,
 		y: 300,
 		range: 40,
-		hp: 3,
+		hp: 10,
 		maxHp: 40,
 		walkSpeed: 100,
 		attackSpeed: 1
