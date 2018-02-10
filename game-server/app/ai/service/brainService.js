@@ -19,6 +19,5 @@ pro.getBrain = function(type, blackboard) {
 };
 
 pro.registerBrain = function(type, brain) {
-	utils.myPrint('registerBrain ', type);
 	this.brains[type] = brain;
 };

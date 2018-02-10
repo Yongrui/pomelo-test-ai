@@ -81,3 +81,11 @@ utils.myPrint = function() {
 	}
 };
 // print the file name and the line number ~ end
+
+utils.random01 = function () {
+	return Math.random();
+};
+
+utils.randomMN = function (m, n) {
+	return Math.floor(this.random01() * (n - m + 1) + m);
+};

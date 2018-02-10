@@ -5,12 +5,13 @@
 
 		this.id = opts.id;
 		this.color = opts.color;
-		this.label = opts.hp;
+		this.hp = opts.hp;
 		this.radius = opts.radius;
 		this.map = opts.map;
 
-		this.tx = 0;
-		this.ty = 0;
+		this._x = opts.x;
+		this._y = opts.y;
+		this.speed = opts.speed;
 
 		this.setup();
 	}
@@ -20,14 +21,21 @@
 		var circle = new createjs.Shape();
 		circle.graphics.beginFill(this.color).drawCircle(0, 0, this.radius);
 
-		var text = new createjs.Text(this.label, "10px Arial", "#fff");
+		var text = new createjs.Text(this.hp, "10px Arial", "#fff");
 		// text.textBaseline = "top";
 		text.textAlign = "center";
+		this.hpText = text;
 
 		this.addChild(circle, text);
+
+		this.x = this._x;
+		this.y = this._y;
 	};
 
 	p.movePath = function (path, speed) {
+		if (!speed) {
+			speed = this.speed;
+		}
 		this.stopWholeAnimations();
 		this.clearPath();
 
@@ -41,7 +49,7 @@
 	};
 
 	p.clearPath = function () {
-		this.curPath = null;
+		// this.curPath = null;
 		this.leftDistance = 0;
 		this.leftTime = 0;
 	};
@@ -107,6 +115,13 @@
 	p.died = function () {
 		this.stopWholeAnimations();
 		this.clearPath();
+	};
+
+	p.update = function(data) {
+		this.hp = data.damage;
+		if (this.hpText) {
+			this.hpText.text = this.hp;
+		}
 	};
 
 	window.Ball = createjs.promote(Ball, "Container");

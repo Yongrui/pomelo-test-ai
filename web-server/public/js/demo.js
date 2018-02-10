@@ -9,41 +9,43 @@ function start () {
 	stage.addChild(map);
 
 	function addEntity (data) {
-		var e = new Ball(data);
+		var color = 'red';
+		if (data.camp == 'enemy') {
+			color = 'blue';
+		}
+		var e = new Ball({
+			id: data.entityId,
+			hp: data.hp,
+			x: data.x,
+			y: data.y,
+			speed: data.walkSpeed,
+			radius: size/2,
+			color: color
+		});
 		map.addEntity(e);
 		return e;
 	}
 
-	var EA = addEntity({
-		id: 1,
-		radius: size,
-		color: 'red',
-		hp: 10,
-		map: map
-	});
-	var EB = addEntity({
-		id: 2,
-		radius: size,
-		color: 'blue',
-		hp: 10,
-		map: map
-	});
+	function removeEntity(entityId) {
+		map.removeEntity(entityId);
+	}
 
 	function movePath (data) {
 		var entityId = data.entityId;
 		var entity = map.getEntity(entityId);
 		if (!entity) {
+			console.log('no  entity ', entityId);
 			return;
 		}
 		var path = data.path;
 		if (!path || path.length <= 1) {
 			return;
 		}
-		entity.movePath(path, data.speed);
+		entity.movePath(path, data.walkSpeed);
 	}
 
 	pomelo.on('onMove', function(data) {
-		// console.log(data.path);
+		// console.log(data.entityId, data.path);
 		movePath(data);
 	});
 
@@ -68,6 +70,7 @@ function start () {
 		}
 
 		attacker.attack();
+		target.update({damage:  data.result.damage});
 
 		var result = data.result.result;
 		if (result === AttackResult.KILLED) {
@@ -76,7 +79,23 @@ function start () {
 	}
 
 	pomelo.on('onAttack', function(data) {
-		// console.log(data);
+		console.log('onAttack', data);
 		attack(data);
+	});
+
+	pomelo.on('onAddEntities', function(data) {
+		console.log('onAddEntities', data);
+		var entities = data.entities;
+		for (var i = 0; i < entities.length; i++) {
+			addEntity(entities[i]);
+		}
+	});
+
+	pomelo.on('onRemoveEntities', function(data) {
+		console.log('onRemoveEntities', data);
+		var entities = data.entities;
+		for (var i = 0; i < entities.length; i++) {
+			removeEntity(entities[i]);
+		}
 	});
 }

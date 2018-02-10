@@ -20,11 +20,18 @@ module.exports = {
 		ENEMY: 'enemy'
 	},
 	ARENA: {
-		CREATE_ARENA_CODE: {
-			OK: 1
+		ARENA_ID_NONE: 0,
+		ENTER_ARENA_CODE: {
+			OK: 1,
+			ALREADY_IN_ARENA: -1,
+			SYS_ERROR: -2
 		},
 
 		OK: 1,
 		FAILED: 0
+	},
+	PLAYER: {
+		CREATE_SUCCESS: 1,
+		ALREADY_EXISTED: -1
 	}
 }

@@ -1,6 +1,8 @@
 var arenaManager = require('../../../services/arenaManager');
 var Player = require('../../../domain/entity/player');
 var pomelo = require('pomelo');
+var utils = require('../../../util/utils');
+var playerManager = require('../../../services/playerManager');
 
 module.exports = function(app) {
 	return new Handler(app);
@@ -19,66 +21,42 @@ var Handler = function(app) {
  * @return {Void}
  */
 Handler.prototype.entry = function(msg, session, next) {
-	// next(null, {
-	// 	code: 200,
-	// 	msg: 'game server is ok.'
-	// });
-
-
-	var result = arenaManager.createArena();
-	var arena = arenaManager.getArenaById(result.arenaId)
-	var player = new Player({
-		id: 1,
-		userId: '123',
-		name: 'lyr',
-		camp: 'we',
-		arena: arena
+	var uid = '123';
+	var sid = this.app.getServerId();
+	session.bind(uid);
+	session.set('serverId', sid);
+	session.on('closed', onUserLeave.bind(null, this.app));
+	var param = {
+		uid: uid,
+		sid: sid
+	};
+	this.app.rpc.arena.arenaRemote.createArena(session, param, function(err, msg) {
+		next(null, msg);
 	});
-
-	session.bind(player.userId);
-	// session.set('serverId', pomelo.app.getServerId());
-	// session.set('userId', player.userId);
-	player.serverId = pomelo.app.getServerId();
-	arena.createChannel();
-	arena.addPlayer(player);
-	arena.addPlayer2Channel(player);
-	arena.start();
 };
 
-/**
- * Publish route for mqtt connector.
- *
- * @param  {Object}   msg     request message
- * @param  {Object}   session current session object
- * @param  {Function} next    next step callback
- * @return {Void}
- */
-Handler.prototype.publish = function(msg, session, next) {
-	var result = {
-		topic: 'publish',
-		payload: JSON.stringify({
-			code: 200,
-			msg: 'publish message is ok.'
-		})
-	};
-	next(null, result);
-};
+var onUserLeave = function (app, session) {
+	if(!session || !session.uid) {
+		return;
+	}
 
-/**
- * Subscribe route for mqtt connector.
- *
- * @param  {Object}   msg     request message
- * @param  {Object}   session current session object
- * @param  {Function} next    next step callback
- * @return {Void}
- */
-Handler.prototype.subscribe = function(msg, session, next) {
-	var result = {
-		topic: 'subscribe',
-		payload: JSON.stringify({
-			code: 200,
-			msg: 'subscribe message is ok.'
-		})
+	utils.myPrint('1 ~ OnUserLeave is running ...');
+	// app.rpc.area.playerRemote.playerLeave(session, {playerId: session.get('playerId'), instanceId: session.get('instanceId')}, function(err){
+	// 	if(!!err){
+	// 		logger.error('user leave error! %j', err);
+	// 	}
+	// });
+	// app.rpc.chat.chatRemote.kick(session, session.uid, null);
+	if (!playerManager.isPlayerInArena(session.uid)) {
+		return;
+	}
+
+	var player = playerManager.getPlayerByUid(uid);
+	var playerId = player.id;
+	var arenaId = player.arenaId;
+	var param  = {
+		playerId: playerId,
+		arenaId: arenaId
 	};
-	next(null, result);
+	app.rpc.arena.arenaRemote.leaveArenaById(session, param, null);
 };

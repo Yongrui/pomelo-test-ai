@@ -6,6 +6,7 @@ var ActionManager = require('./../action/actionManager');
 var eventManager = require('./../event/eventManager');
 var channelUtil = require('../../util/channelUtil');
 var Timer = require('./timer');
+var playerManager = require('../../services/playerManager');
 
 function Arena (opts) {
 	this.arenaId = opts.arenaId;
@@ -45,11 +46,11 @@ Arena.prototype.createChannel = function() {
 
 Arena.prototype.addPlayer2Channel = function(data) {
 	if (!this.channel) {
-		return false;
+		this.createChannel();
 	}
 
-	if (!!data) {
-		utils.myPrint('addPlayer2Channel ', data.userId, data.serverId);
+	utils.myPrint('1 ~ Arena addPlayer2Channel ', data.userId, data.serverId);
+	if (!!data && !!data.userId && !!data.serverId) {
 		this.channel.add(data.userId, data.serverId);
 		return true;
 	}
@@ -62,7 +63,8 @@ Arena.prototype.removePlayerFromChannel = function(data) {
 		return false;
 	}
 
-	if (!!data) {
+	utils.myPrint('1 ~ Arena removePlayerFromChannel ', data.userId, data.serverId);
+	if (!!data && !!data.userId && !!data.serverId) {
 		this.channel.leave(data.userId, data.serverId);
 		return true;
 	}
@@ -70,12 +72,12 @@ Arena.prototype.removePlayerFromChannel = function(data) {
 	return false;
 };
 
-Arena.prototype.pushMsg2All = function(route, content) {
+Arena.prototype.pushMsg2All = function(route, content, cb) {
 	if (!this.channel) {
 		return false;
 	}
 
-	this.channel.pushMessage(route, content, null);
+	this.channel.pushMessage(route, content, cb);
 	return true;
 };
 
@@ -97,6 +99,8 @@ Arena.prototype.addEntity = function(e) {
 
 	eventManager.addEvent(e);
 	this.aiManager.addCharacters([e]);
+
+	this.pushMsg2All('onAddEntities', {entities: [e]}, null);
 	return true;
 };
 
@@ -116,6 +120,8 @@ Arena.prototype.removeEntity = function(entityId) {
 	e.forEachHater(function (hater) {
 		hater.forgetEnemy(e.entityId);
 	});
+
+	this.pushMsg2All('onRemoveEntities', {entities: [entityId]}, null);
 
 	delete entities[entityId];
 };
@@ -156,20 +162,78 @@ Arena.prototype.getEnemyCampEntities = function(e) {
 	return this.getCampEntities(consts.CampType.WE);
 };
 
-Arena.prototype.addPlayer = function(player) {
-	if (!!this.players[player.userId]) {
+Arena.prototype.isPlayerInArena = function(playerId) {
+	return !!this.players[playerId];
+};
+
+Arena.prototype.addPlayer = function(data) {
+	var ret = playerManager.createPlayer({
+		uid: data.uid,
+		sid: data.sid
+	});
+	if (ret.result !== consts.PLAYER.CREATE_SUCCESS) {
+		return ret.result;
+	}
+
+	if (this.isPlayerInArena(ret.playerId)) {
+		return consts.ARENA.ENTER_ARENA_CODE.ALREADY_IN_ARENA;
+	}
+
+	var player = playerManager.getPlayerByPlayerId(ret.playerId);
+	if (!this.addPlayer2Channel(player)) {
+		return consts.ARENA.ENTER_ARENA_CODE.SYS_ERROR;
+	}
+
+	player.enterArena(this.arenaId);
+	this.players[ret.playerId] = player;
+
+	utils.myPrint('1 ~ Arena  addPlayer ', JSON.stringify(ret));
+
+	return consts.ARENA.ENTER_ARENA_CODE.OK;
+};
+
+Arena.prototype.removePlayer = function(playerId, cb) {
+	var player = this.players[playerId];
+	if (!player) {
+		var ret = {result: consts.ARENA.FAILED};
+		utils.invokeCallback(cb, null, ret);
 		return false;
 	}
 
-	this.players[player.userId] = player;
+	if (!player.leaveArena()) {
+		var ret = {result: consts.ARENA.FAILED};
+		utils.invokeCallback(cb, null, ret);
+		return false;
+	}
+
+	playerManager.removePlayer(player.userId);
+	this.removePlayerFromChannel(player);
+	delete _this.players[playerId];
+	utils.invokeCallback(cb, null, ret);
 	return true;
 };
 
-Arena.prototype.removePlayer = function(uid) {
-	var player = this.players[uid];
-	if (!player) return true;
+Arena.prototype.getAllPlayers = function() {
+	var _players = [];
+	for (var id in this.players) {
+		_players.push(this.players[id]);
+	}
 
-	delete this.players[uid];
+	return _players;
+}
+
+Arena.prototype.pushLeaveMsg2All = function(leavePlayerId, cb) {
+	var ret = {result: consts.ARENA.OK};
+	if (!this.channel) {
+		cb(null, ret);
+		return;
+	}
+
+	this.pushMsg2All('onPlayerLeaveArena', {
+		playerId: leavePlayerId
+	}, function(err, _) {
+		cb(null, ret);
+	});
 };
 
 module.exports = Arena;

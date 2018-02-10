@@ -1,30 +1,24 @@
+var arenaManager = require('../../../services/arenaManager');
+var pomelo = require('pomelo');
+var utils = require('../../../util/utils');
+
 module.exports = function(app) {
 	return new ArenaRemote();
 };
 
-var ArenaRemote = function() {
+var ArenaRemote = function() {};
+
+ArenaRemote.prototype.leaveArenaById = function(args, cb) {
+	var playerId = args.playerId;
+	var arenaId = args.arenaId;
+	arenaManager.leaveArenaById(playerId, arenaId, cb);
 };
 
-/**
- *	Add player into channel
- */
-ArenaRemote.prototype.add = function(uid, playerName, channelName, cb) {
-	cb();
+ArenaRemote.prototype.createArena = function(args, cb) {
+	var ret = arenaManager.createArena(args);
+	utils.invokeCallback(cb, null, ret);
 };
 
-/**
- * leave Channel
- * uid
- * channelName
- */
-ArenaRemote.prototype.leaveArena =function(uid, channelName, cb){
-	cb();
-};
-
-/**
- * kick out user
- *
- */
-ArenaRemote.prototype.kickOut = function(uid, cb){
-	cb();
+ArenaRemote.prototype.kickOut = function(args, cb) {
+	arenaManager.kickOut(args, cb);
 };
