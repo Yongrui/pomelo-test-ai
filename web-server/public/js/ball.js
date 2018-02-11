@@ -118,7 +118,7 @@
 	};
 
 	p.update = function(data) {
-		this.hp = data.damage;
+		this.hp -= data.damage;
 		if (this.hpText) {
 			this.hpText.text = this.hp;
 		}

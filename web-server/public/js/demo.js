@@ -70,11 +70,13 @@ function start () {
 		}
 
 		attacker.attack();
-		target.update({damage:  data.result.damage});
 
 		var result = data.result.result;
-		if (result === AttackResult.KILLED) {
-			target.died();
+		if (result === AttackResult.SUCCESS || result === AttackResult.KILLED) {
+			target.update({damage: data.result.damage});
+			if (result === AttackResult.KILLED) {
+				target.died();
+			}
 		}
 	}
 
