@@ -47,16 +47,8 @@ var onUserLeave = function (app, session) {
 	// 	}
 	// });
 	// app.rpc.chat.chatRemote.kick(session, session.uid, null);
-	if (!playerManager.isPlayerInArena(session.uid)) {
-		return;
-	}
-
-	var player = playerManager.getPlayerByUid(uid);
-	var playerId = player.id;
-	var arenaId = player.arenaId;
-	var param  = {
-		playerId: playerId,
-		arenaId: arenaId
-	};
-	app.rpc.arena.arenaRemote.leaveArenaById(session, param, null);
+	
+	app.rpc.arena.arenaRemote.kickOut(session, {uid: session.uid}, function(err, ret) {
+		utils.myPrint('1 ~ kickOut ', ret);
+	});
 };

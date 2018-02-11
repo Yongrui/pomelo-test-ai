@@ -171,6 +171,8 @@ Arena.prototype.addPlayer = function(data) {
 		uid: data.uid,
 		sid: data.sid
 	});
+
+	utils.myPrint('1 ~ Arena addPlayer ', ret.result);
 	if (ret.result !== consts.PLAYER.CREATE_SUCCESS) {
 		return ret.result;
 	}
@@ -193,6 +195,7 @@ Arena.prototype.addPlayer = function(data) {
 };
 
 Arena.prototype.removePlayer = function(playerId, cb) {
+	utils.myPrint('1 ~ Arena removePlayer ', playerId);
 	var player = this.players[playerId];
 	if (!player) {
 		var ret = {result: consts.ARENA.FAILED};
@@ -208,7 +211,7 @@ Arena.prototype.removePlayer = function(playerId, cb) {
 
 	playerManager.removePlayer(player.userId);
 	this.removePlayerFromChannel(player);
-	delete _this.players[playerId];
+	delete this.players[playerId];
 	utils.invokeCallback(cb, null, ret);
 	return true;
 };

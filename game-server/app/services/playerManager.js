@@ -49,7 +49,7 @@ exp.removePlayer = function(uid) {
 };
 
 exp.isPlayerInArena = function(uid) {
-	var player = this.getPlayerByUid(uid)
+	var player = this.getPlayerByUid(uid);
 	if (!player) {
 		return false;
 	}

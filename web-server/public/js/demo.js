@@ -81,7 +81,7 @@ function start () {
 	}
 
 	pomelo.on('onAttack', function(data) {
-		console.log('onAttack', data);
+		// console.log('onAttack', data);
 		attack(data);
 	});
 
