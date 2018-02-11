@@ -13,7 +13,8 @@ var attack = function(attacker, target, skill) {
 	target.hit(attacker, damageValue);
 
 	if (skill.skillId == 1) {
-		skill.coolDownTime = 1;
+		var cooltime = 1;
+		skill.coolDownTime = Date.now() + Number(cooltime / attacker.attackSpeed * 1000);
 	}
 
 	if (target.died) {
@@ -53,7 +54,7 @@ FightSkill.prototype.judge = function(attacker, target) {
 	return {
 		result: consts.AttackResult.SUCCESS
 	};
-};;
+};
 
 var AttackSkill = function(opts) {
 	FightSkill.call(this, opts);
