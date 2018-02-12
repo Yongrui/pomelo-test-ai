@@ -6,7 +6,6 @@ var ActionManager = require('./../action/actionManager');
 var eventManager = require('./../event/eventManager');
 var channelUtil = require('../../util/channelUtil');
 var Timer = require('./timer');
-var playerManager = require('../../services/playerManager');
 
 function Arena (opts) {
 	this.arenaId = opts.arenaId;
@@ -92,9 +91,9 @@ Arena.prototype.addEntity = function(e) {
 	entities[e.entityId] = e;
 
 	var enemies = this.getEnemyCampEntities(e);
-	for (var id in enemies) {
-		e.increaseHateFor(id, 5);
-		enemies[id].increaseHateFor(e.entityId, 5);
+	for (var i = 0; i < enemies.length; i++) {
+		e.increaseHateFor(enemies[i].entityId, 5);
+		enemies[i].increaseHateFor(e.entityId, 5);
 	}
 
 	eventManager.addEvent(e);
@@ -139,12 +138,12 @@ Arena.prototype.getAllEntities = function() {
 };
 
 Arena.prototype.getCampEntities = function(camp) {
-	var result = {};
+	var result = [];
 	var entities = this.entities;
 
 	for (var id in entities) {
 		if (entities[id].camp === camp) {
-			result[id] = entities[id]
+			result.push(entities[id]);
 		}
 	}
 
@@ -166,36 +165,22 @@ Arena.prototype.isPlayerInArena = function(playerId) {
 	return !!this.players[playerId];
 };
 
-Arena.prototype.addPlayer = function(data) {
-	var ret = playerManager.createPlayer({
-		uid: data.uid,
-		sid: data.sid
-	});
-
-	utils.myPrint('1 ~ Arena addPlayer ', ret.result);
-	if (ret.result !== consts.PLAYER.CREATE_SUCCESS) {
-		return ret.result;
-	}
-
-	if (this.isPlayerInArena(ret.playerId)) {
+Arena.prototype.addPlayer = function(player) {
+	if (!!this.players[player.id]) {
 		return consts.ARENA.ENTER_ARENA_CODE.ALREADY_IN_ARENA;
 	}
 
-	var player = playerManager.getPlayerByPlayerId(ret.playerId);
 	if (!this.addPlayer2Channel(player)) {
 		return consts.ARENA.ENTER_ARENA_CODE.SYS_ERROR;
 	}
 
 	player.enterArena(this.arenaId);
-	this.players[ret.playerId] = player;
-
-	utils.myPrint('1 ~ Arena  addPlayer ', JSON.stringify(ret));
+	this.players[player.id] = player;
 
 	return consts.ARENA.ENTER_ARENA_CODE.OK;
 };
 
 Arena.prototype.removePlayer = function(playerId, cb) {
-	utils.myPrint('1 ~ Arena removePlayer ', playerId);
 	var player = this.players[playerId];
 	if (!player) {
 		var ret = {result: consts.ARENA.FAILED};
@@ -209,7 +194,6 @@ Arena.prototype.removePlayer = function(playerId, cb) {
 		return false;
 	}
 
-	playerManager.removePlayer(player.userId);
 	this.removePlayerFromChannel(player);
 	delete this.players[playerId];
 	utils.invokeCallback(cb, null, ret);

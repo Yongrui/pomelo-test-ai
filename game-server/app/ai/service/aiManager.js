@@ -18,7 +18,6 @@ Manager.prototype.stop = function() {
 };
 
 Manager.prototype.addCharacters = function(cs) {
-	utils.myPrint('aiManager addCharacters');
 	// if(!this.started || this.closed) {
 	// 	return;
 	// }
@@ -45,7 +44,6 @@ Manager.prototype.addCharacters = function(cs) {
 };
 
 Manager.prototype.removeCharacter = function(id) {
-	utils.myPrint('aiManager removeCharacter ', id);
 	// if (!this.started || this.closed) {
 	// 	return;
 	// }

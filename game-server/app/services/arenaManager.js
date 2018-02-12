@@ -3,20 +3,55 @@ var Map = require('../domain/arena/map');
 var consts = require('../consts/consts');
 var utils = require('../util/utils');
 var Soldier = require('../domain/entity/soldier');
+var Player = require('../domain/entity/player');
 
 var exp = module.exports;
 
+var uidMap = {};
 var gArenaObjDict = {};
 var gArenaId = 0;
 
+var addRecord = function(arenaId, data, playerId) {
+	var record = {
+		uid: data.uid,
+		sid: data.sid,
+		arenaId: arenaId,
+		playerId: playerId
+	};
+	uidMap[data.uid] = record;
+};
+
+var removeRecord = function(uid) {
+	if (!uidMap[uid]) {
+		return;
+	}
+
+	delete uidMap[uid];
+}
+
+var checkDuplicate = function(uid) {
+	return !!uidMap[uid];
+};
+
+var getRecord = function(uid) {
+	return uidMap[uid] || null;
+};
+
 exp.createArena = function(data) {
+	if (checkDuplicate(data.uid)) {
+		return {
+			result: consts.ARENA.ENTER_ARENA_CODE.ALREADY_IN_ARENA
+		};
+	}
 	var arenaObj = new Arena({
 		arenaId: ++gArenaId,
 		map: new Map()
 	});
-	var result = arenaObj.addPlayer(data);
+	var player = new Player(data);
+	var result = arenaObj.addPlayer(player);
 	if (result === consts.ARENA.ENTER_ARENA_CODE.OK) {
 		gArenaObjDict[arenaObj.arenaId] = arenaObj;
+		addRecord(arenaObj.arenaId, data, player.id);
 	}
 	return {
 		result: result,
@@ -36,10 +71,21 @@ exp.removeArenaById = function(arenaId) {
 			result: consts.ARENA.FAILED
 		};
 	}
+
+	var players = arenaObj.getAllPlayers();
+	for (var i = 0; i < players.length; i++) {
+		removeRecord(players[i].userId);
+	}
 	delete gArenaObjDict[arenaId];
 };
 
-exp.randomEntity = function(arenaId) {
+exp.randomEntity = function(uid) {
+	var record = getRecord(uid);
+	if (!record) {
+		return false;
+	}
+
+	var arenaId  = record.arenaId;
 	var arenaObj = gArenaObjDict[arenaId];
 	if (!arenaObj) {
 		return false;
@@ -48,10 +94,10 @@ exp.randomEntity = function(arenaId) {
 	var rate = 0.5;
 	var weEntities = arenaObj.getCampEntities(consts.CampType.WE);
 	var enemyEntities = arenaObj.getCampEntities(consts.CampType.ENEMY);
+	utils.myPrint('randomEntity ', weEntities.length, enemyEntities.length);
 	if (weEntities.length > enemyEntities.length) {
 		rate = 0;
-	}
-	else if (weEntities.length < enemyEntities.length) {
+	} else if (weEntities.length < enemyEntities.length) {
 		rate = 1;
 	}
 
@@ -84,7 +130,17 @@ exp.randomEntity = function(arenaId) {
 	return arenaObj.addEntity(e);
 };
 
-exp.leaveArenaById = function(playerId, arenaId, cb) {
+exp.leaveArenaById = function(uid, cb) {
+	var record = getRecord(uid);
+	if (!record) {
+		utils.invokeCallback(cb, null, {
+			result: consts.ARENA.FAILED
+		});
+		return;
+	}
+
+	var arenaId  = record.arenaId;
+	var playerId = record.playerId;
 	var arenaObj = gArenaObjDict[arenaId];
 	if (!arenaObj) {
 		utils.invokeCallback(cb, null, {
@@ -98,23 +154,34 @@ exp.leaveArenaById = function(playerId, arenaId, cb) {
 	});
 };
 
-exp.enterArenaById = function(playerId, arenaId, cb) {
+exp.enterArenaById = function(uid, cb) {
 
 };
 
-exp.kickOut = function(args, cb) {
-	if (!args || !args.arenaId) {
-		utils.invokeCallback(cb, null, {result: consts.ARENA.FAILED});
-		return;
+exp.kickOut = function(uid, cb) {
+	var record = getRecord(uid);
+	if (!record) {
+		return true;
 	}
-	this.leaveArenaById(args.kickedPlayerId, args.arenaId, function(err, ret) {
+
+	var arenaId  = record.arenaId;
+	var kickedPlayerId = record.playerId;
+	this.leaveArenaById(kickedPlayerId, arenaId, function(err, ret) {
 		utils.invokeCallback(cb, null, ret);
 	});
 };
 
-exp.startArena = function(arenaId) {
+exp.startArena = function(uid) {
+	var record = getRecord(uid);
+	if (!record) {
+		return true;
+	}
+
+	var arenaId  = record.arenaId;
 	var arenaObj = gArenaObjDict[arenaId];
 	if (arenaObj) {
 		arenaObj.start();
+		return true;
 	}
+	return false;
 }

@@ -1,8 +1,6 @@
-var arenaManager = require('../../../services/arenaManager');
 var Player = require('../../../domain/entity/player');
 var pomelo = require('pomelo');
 var utils = require('../../../util/utils');
-var playerManager = require('../../../services/playerManager');
 
 module.exports = function(app) {
 	return new Handler(app);
