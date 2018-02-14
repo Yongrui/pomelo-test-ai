@@ -124,5 +124,10 @@
 		}
 	};
 
+	p.stand = function(data) {
+		this.stopMove();
+		this.clearPath();
+	};
+
 	window.Ball = createjs.promote(Ball, "Container");
 }());

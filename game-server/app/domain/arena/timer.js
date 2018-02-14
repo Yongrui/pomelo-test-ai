@@ -4,6 +4,7 @@ var Timer = function(opts) {
 	this.arena = opts.arena;
 	this.interval = opts.interval || 100;
 	this.tickCnt = 0;
+	this.duraion = opts.duraion || 60 * 1000 * 3;
 };
 
 module.exports = Timer;
@@ -17,10 +18,12 @@ Timer.prototype.close = function() {
 };
 
 Timer.prototype.tick = function() {
-	// utils.myPrint('tick = ', (++this.tickCnt) * this.interval);
 	var arena = this.arena;
 	arena.actionManager.update();
 	arena.aiManager.update();
+
+	if ((++this.tickCnt * this.interval) >= this.duraion) {
+	}
 };
 
 Timer.prototype.addAction = function(action) {
@@ -33,13 +36,4 @@ Timer.prototype.abortAction = function(type, id) {
 
 Timer.prototype.abortAllAction = function(id) {
 	this.arena.actionManager.abortAllAction(id);
-};
-
-Timer.prototype.enterAI = function(entityId) {
-	var arena = this.arena;
-
-	this.abortAction('move', entityId);
-	if (!!arena.entities[entityId]) {
-		arena.aiManager.addCharacters([arena.entities[entityId]]);
-	}
 };

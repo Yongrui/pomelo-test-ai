@@ -62,7 +62,6 @@ Move.prototype.update = function() {
 
 	this.entity.x = Math.floor(pos.x);
 	this.entity.y = Math.floor(pos.y);
-	// utils.myPrint('Move ', this.entity.entityName, this.entity.x, this.entity.y);
 
 	this.time = Date.now();
 };

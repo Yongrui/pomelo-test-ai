@@ -2,6 +2,7 @@ var TryAndAdjust = require('../node/tryAndAdjust');
 var TryAttack = require('../action/tryAttack');
 var MoveToTarget = require('../action/moveToTarget');
 var TryFindTarget = require('../action/tryFindTarget');
+var Stand = require('../action/stand');
 var bt = require('pomelo-bt');
 var Loop = bt.Loop;
 var If = bt.If;
@@ -70,6 +71,7 @@ var Brain = function(blackboard) {
 	});
 
 	var findTarget = new TryFindTarget({blackboard: blackboard});
+	var stand = new Stand({blackboard: blackboard});
 
 	//composite them together
 	this.action = new Select({
@@ -77,6 +79,7 @@ var Brain = function(blackboard) {
 	});
 
 	this.action.addChild(attackIfHaveTarget);
+	this.action.addChild(stand);
 	this.action.addChild(findTarget);
 };
 

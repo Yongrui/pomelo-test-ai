@@ -82,7 +82,6 @@ Character.prototype.move = function(targetX, targetY, cb) {
 	var paths = this.arena.map.findPath(this.x, this.y, targetX, targetY);
 
 	if (!!paths) {
-		// utils.myPrint('move ', this.entityName, JSON.stringify(paths));
 		this.emit('move', {
 			character: this,
 			paths: paths
@@ -110,8 +109,12 @@ Character.prototype.attack = function(target, skillId) {
 	this.setTarget(target.entityId);
 	this.addEnemy(target.entityId);
 
-	// utils.myPrint('attack ', this.x, this.y, target.x, target.y)
 	var result = skill.use(this, target);
+	if (result.result === consts.AttackResult.MISS ||
+		result.result === consts.AttackResult.NOT_COOLDOWN) {
+		return result;
+	}
+
 	this.emit('attack', {
 		attacker: this,
 		target: target,
@@ -120,6 +123,12 @@ Character.prototype.attack = function(target, skillId) {
 	});
 
 	return result;
+};
+
+Character.prototype.stand = function() {
+	this.emit('stand', {
+		character: this
+	});
 };
 
 Character.prototype.hit = function(attacker, damage) {

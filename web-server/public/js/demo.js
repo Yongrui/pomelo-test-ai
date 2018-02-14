@@ -100,4 +100,19 @@ function start () {
 			removeEntity(entities[i]);
 		}
 	});
+
+	function stand(data) {
+		var entityId = data.entityId;
+		var entity = map.getEntity(entityId);
+		if (!entity) {
+			return;
+		}
+
+		entity.stand();
+	}
+
+	pomelo.on('onStand', function(data) {
+		console.log('onStand ', data);
+		stand(data);
+	});
 }

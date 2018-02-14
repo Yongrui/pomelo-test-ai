@@ -33,6 +33,8 @@ Action.prototype.doAction = function() {
 	}
 
 	if (target.camp === character.camp) {
+		character.forgetHater(targetId);
+		this.blackboard.curTarget = null;
 		return bt.RES_FAIL;
 	}
 

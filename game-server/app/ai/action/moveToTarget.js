@@ -21,7 +21,7 @@ Action.prototype.doAction = function() {
 	// utils.myPrint('MoveToTarget ', character.entityName);
 
 	if (!target) {
-		utils.myPrint('MoveToTarget no target');
+		utils.myPrint('MoveToTarget no target ', targetId);
 		// target has disappeared or died
 		character.forgetHater(targetId);
 		return bt.RES_FAIL;

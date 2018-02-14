@@ -47,4 +47,14 @@ module.exports.addEventForCharacter = function(character) {
 			skillId: args.skillId
 		});
 	});
+
+	character.on('stand', function(args) {
+		var character = args.character;
+		var arena = character.arena;
+		arena.pushMsg2All('onStand', {
+			entityId: character.entityId,
+			x: character.x,
+			y: character.y
+		});
+	});
 };
