@@ -29,7 +29,9 @@ Handler.prototype.leaveArena = function(msg, session, next) {
 };
 
 Handler.prototype.kickOut = function(msg, session, next) {
-	this.leaveArena(msg, session, next);
+	this.app.rpc.arena.arenaRemote.leaveArenaById(session, session.uid, function(err, msg) {
+		next();
+	});
 };
 
 Handler.prototype.randomEntity = function(msg, session, next) {

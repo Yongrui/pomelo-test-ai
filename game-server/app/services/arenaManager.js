@@ -10,6 +10,7 @@ var exp = module.exports;
 var uidMap = {};
 var gArenaObjDict = {};
 var gArenaId = 0;
+var gPlayerId = 0;
 
 var addRecord = function(arenaId, data, playerId) {
 	var record = {
@@ -19,9 +20,11 @@ var addRecord = function(arenaId, data, playerId) {
 		playerId: playerId
 	};
 	uidMap[data.uid] = record;
+	utils.myPrint('addRecord ', JSON.stringify(uidMap));
 };
 
 var removeRecord = function(uid) {
+	utils.myPrint('removeRecord ', uid, JSON.stringify(uidMap));
 	if (!uidMap[uid]) {
 		return;
 	}
@@ -47,6 +50,7 @@ exp.createArena = function(data) {
 		arenaId: ++gArenaId,
 		map: new Map()
 	});
+	data.id = ++gPlayerId;
 	var player = new Player(data);
 	var result = arenaObj.addPlayer(player);
 	if (result === consts.ARENA.ENTER_ARENA_CODE.OK) {
@@ -150,6 +154,7 @@ exp.leaveArenaById = function(uid, cb) {
 	}
 
 	arenaObj.removePlayer(playerId, function(err, ret) {
+		utils.myPrint('leaveArenaById cb ', err, JSON.stringify(ret));
 		utils.invokeCallback(cb, null, ret);
 	});
 };
@@ -159,14 +164,8 @@ exp.enterArenaById = function(uid, cb) {
 };
 
 exp.kickOut = function(uid, cb) {
-	var record = getRecord(uid);
-	if (!record) {
-		return true;
-	}
-
-	var arenaId  = record.arenaId;
-	var kickedPlayerId = record.playerId;
-	this.leaveArenaById(kickedPlayerId, arenaId, function(err, ret) {
+	this.leaveArenaById(uid, function(err, ret) {
+		utils.myPrint('kickOut cb ', err, JSON.stringify(ret));
 		utils.invokeCallback(cb, null, ret);
 	});
 };

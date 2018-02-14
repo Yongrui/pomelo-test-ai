@@ -196,6 +196,7 @@ Arena.prototype.removePlayer = function(playerId, cb) {
 
 	this.removePlayerFromChannel(player);
 	delete this.players[playerId];
+	var ret = {result: consts.ARENA.OK};
 	utils.invokeCallback(cb, null, ret);
 	return true;
 };
@@ -210,17 +211,16 @@ Arena.prototype.getAllPlayers = function() {
 }
 
 Arena.prototype.pushLeaveMsg2All = function(leavePlayerId, cb) {
-	var ret = {result: consts.ARENA.OK};
-	if (!this.channel) {
-		cb(null, ret);
-		return;
-	}
-
-	this.pushMsg2All('onPlayerLeaveArena', {
+	var result = this.pushMsg2All('onPlayerLeaveArena', {
 		playerId: leavePlayerId
 	}, function(err, _) {
+		var ret = {result: consts.ARENA.OK};
 		cb(null, ret);
 	});
+	if (!result) {
+		var ret = {result: consts.ARENA.FAILED};
+		cb(null, ret)
+	}
 };
 
 module.exports = Arena;

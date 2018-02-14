@@ -47,6 +47,6 @@ var onUserLeave = function (app, session) {
 	// app.rpc.chat.chatRemote.kick(session, session.uid, null);
 	
 	app.rpc.arena.arenaRemote.kickOut(session, {uid: session.uid}, function(err, ret) {
-		utils.myPrint('1 ~ kickOut ', ret);
+		utils.myPrint('1 ~ kickOut ', err, ret);
 	});
 };
