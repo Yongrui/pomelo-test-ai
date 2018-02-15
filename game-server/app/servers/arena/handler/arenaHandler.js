@@ -12,13 +12,13 @@ var Handler = function(app) {
 
 Handler.prototype.createArena = function(msg, session, next) {
 	var uid = session.uid;
-	var sid = session.get('serverId');
+	var sid = session.frontendId;
 	var param = {
 		uid: uid,
 		sid: sid
 	};
 	this.app.rpc.arena.arenaRemote.createArena(session, param, function(err, msg) {
-		next(null, ret);
+		next(null, msg);
 	});
 };
 

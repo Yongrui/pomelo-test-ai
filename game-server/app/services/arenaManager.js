@@ -70,6 +70,7 @@ exp.getArenaById = function(arenaId) {
 
 exp.removeArenaById = function(arenaId) {
 	var arenaObj = gArenaObjDict[arenaId];
+	utils.myPrint('1 ~ removeArenaById ', arenaId, arenaObj);
 	if (!arenaObj) {
 		return {
 			result: consts.ARENA.FAILED
@@ -81,6 +82,9 @@ exp.removeArenaById = function(arenaId) {
 		removeRecord(players[i].userId);
 	}
 	delete gArenaObjDict[arenaId];
+	return {
+		result: consts.ARENA.OK
+	};
 };
 
 exp.randomEntity = function(uid) {

@@ -22,7 +22,6 @@ Handler.prototype.entry = function(msg, session, next) {
 	var uid = '123';
 	var sid = this.app.getServerId();
 	session.bind(uid);
-	session.set('serverId', sid);
 	session.on('closed', onUserLeave.bind(null, this.app));
 	var param = {
 		uid: uid,

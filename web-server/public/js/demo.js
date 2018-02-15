@@ -108,11 +108,16 @@ function start () {
 			return;
 		}
 
-		entity.stand();
+		entity.stand(data);
 	}
 
 	pomelo.on('onStand', function(data) {
 		console.log('onStand ', data);
 		stand(data);
 	});
+
+	pomelo.on('onCloseArena', function(data) {
+		console.log('onCloseArena ', data);
+		map.removeAllEntities();
+	})
 }

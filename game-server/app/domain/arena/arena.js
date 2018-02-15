@@ -6,8 +6,11 @@ var ActionManager = require('./../action/actionManager');
 var eventManager = require('./../event/eventManager');
 var channelUtil = require('../../util/channelUtil');
 var Timer = require('./timer');
+var EventEmitter = require('events').EventEmitter;
+var util = require('util');
 
 function Arena (opts) {
+	EventEmitter.call(this);
 	this.arenaId = opts.arenaId;
 	this.map = opts.map;
 
@@ -23,7 +26,11 @@ function Arena (opts) {
 		arena: this,
 		interval: 100
 	});
+
+	eventManager.addArenaEvent(this);
 };
+
+util.inherits(Arena, EventEmitter);
 
 Arena.prototype.start = function() {
 	this.aiManager.start();
@@ -32,6 +39,9 @@ Arena.prototype.start = function() {
 
 Arena.prototype.close = function() {
 	this.timer.close();
+	this.emit('close', {
+		arena: this
+	});
 };
 
 Arena.prototype.createChannel = function() {
@@ -96,7 +106,7 @@ Arena.prototype.addEntity = function(e) {
 		enemies[i].increaseHateFor(e.entityId, 5);
 	}
 
-	eventManager.addEvent(e);
+	eventManager.addCharaterEvent(e);
 	this.aiManager.addCharacters([e]);
 
 	this.pushMsg2All('onAddEntities', {entities: [e]}, null);

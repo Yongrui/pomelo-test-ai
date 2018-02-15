@@ -10,7 +10,7 @@ function Map(width, height, tileW, tileH) {
 	this.startX = 0;
 	this.startY = 0;
 	
-	this.entities = [];
+	this.entities = {};
 
 	this.setup();
 }
@@ -68,6 +68,15 @@ p.removeEntity = function (entityId) {
 	var entity = this.entities[entityId];
 	this.removeChild(entity);
 	delete this.entities[entityId];
+};
+
+p.removeAllEntities = function() {
+	for (var id in this.entities) {
+		if (this.entities[id]) {
+			this.removeEntity(id);
+		}
+	}
+	this.entities = {};
 };
 
 p.getEntity = function (entityId) {

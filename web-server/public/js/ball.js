@@ -127,6 +127,8 @@
 	p.stand = function(data) {
 		this.stopMove();
 		this.clearPath();
+		this.x = data.x;
+		this.y = data.y;
 	};
 
 	window.Ball = createjs.promote(Ball, "Container");
