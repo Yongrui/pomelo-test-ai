@@ -26,6 +26,9 @@ Soldier.prototype.initFightSkill = function() {
 Soldier.prototype.toJSON = function() {
 	return {
 		entityId: this.entityId,
+		kindId: this.kindId,
+		kindName: this.kindName,
+		entityName: this.entityName,
 		x: this.x,
 		y: this.y,
 		hp: this.hp,

@@ -8,6 +8,7 @@
 		this.hp = opts.hp;
 		this.radius = opts.radius;
 		this.map = opts.map;
+		this.name = opts.name;
 
 		this._x = opts.x;
 		this._y = opts.y;
@@ -26,7 +27,12 @@
 		text.textAlign = "center";
 		this.hpText = text;
 
-		this.addChild(circle, text);
+		var text1 = new createjs.Text(this.name, "10px Arial", "#000");
+		text1.textBaseline = "top";
+		text1.textAlign = "center";
+		text1.y = -10;
+
+		this.addChild(circle, text, text1);
 
 		this.x = this._x;
 		this.y = this._y;

@@ -11,10 +11,11 @@ function start () {
 	function addEntity (data) {
 		var color = 'red';
 		if (data.camp == 'enemy') {
-			color = 'blue';
+			color = 'yellow';
 		}
 		var e = new Ball({
 			id: data.entityId,
+			name: data.entityName,
 			hp: data.hp,
 			x: data.x,
 			y: data.y,
