@@ -10,14 +10,12 @@ var exp = module.exports;
 var uidMap = {};
 var gArenaObjDict = {};
 var gArenaId = 0;
-var gPlayerId = 0;
 
-var addRecord = function(arenaId, data, playerId) {
+var addRecord = function(arenaId, data) {
 	var record = {
 		uid: data.uid,
 		sid: data.sid,
-		arenaId: arenaId,
-		playerId: playerId
+		arenaId: arenaId
 	};
 	uidMap[data.uid] = record;
 	utils.myPrint('addRecord ', JSON.stringify(uidMap));
@@ -50,12 +48,11 @@ exp.createArena = function(data) {
 		arenaId: ++gArenaId,
 		map: new Map()
 	});
-	data.id = ++gPlayerId;
 	var player = new Player(data);
 	var result = arenaObj.addPlayer(player);
 	if (result === consts.ARENA.ENTER_ARENA_CODE.OK) {
 		gArenaObjDict[arenaObj.arenaId] = arenaObj;
-		addRecord(arenaObj.arenaId, data, player.id);
+		addRecord(arenaObj.arenaId, data);
 	}
 	return {
 		result: result,
@@ -79,7 +76,7 @@ exp.removeArenaById = function(arenaId) {
 
 	var players = arenaObj.getAllPlayers();
 	for (var i = 0; i < players.length; i++) {
-		removeRecord(players[i].userId);
+		removeRecord(players[i].uid);
 	}
 	delete gArenaObjDict[arenaId];
 	return {
@@ -116,7 +113,8 @@ exp.randomEntity = function(uid) {
 
 	var x = utils.randomMN(0, 960);
 	var y = utils.randomMN(0, 640);
-	var range = utils.randomMN(40, 60);
+	var range = 10;
+	var attackRange = 5;
 	var hp = utils.randomMN(10, 30);
 	var maxHp = hp;
 	var walkSpeed = utils.randomMN(30, 100);
@@ -128,6 +126,7 @@ exp.randomEntity = function(uid) {
 		x: x,
 		y: y,
 		range: range,
+		attackRange: attackRange,
 		hp: hp,
 		maxHp: maxHp,
 		walkSpeed: walkSpeed,
@@ -148,7 +147,7 @@ exp.leaveArenaById = function(uid, cb) {
 	}
 
 	var arenaId  = record.arenaId;
-	var playerId = record.playerId;
+	var uid = record.uid;
 	var arenaObj = gArenaObjDict[arenaId];
 	if (!arenaObj) {
 		utils.invokeCallback(cb, null, {
@@ -157,7 +156,7 @@ exp.leaveArenaById = function(uid, cb) {
 		return;
 	}
 
-	arenaObj.removePlayer(playerId, function(err, ret) {
+	arenaObj.removePlayer(uid, function(err, ret) {
 		utils.myPrint('leaveArenaById cb ', err, JSON.stringify(ret));
 		utils.invokeCallback(cb, null, ret);
 	});

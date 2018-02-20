@@ -15,7 +15,7 @@ formula.calcDamage = function (attack, target, skill) {
 };
 
 formula.inRange = function(origin, target, range) {
-	range = range || origin.range
+	range = range || (origin.range + origin.attackRange + target.range);
 	var dx = origin.x - target.x;
 	var dy = origin.y - target.y;
 	return dx * dx + dy * dy <= range * range;

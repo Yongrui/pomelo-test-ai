@@ -58,9 +58,9 @@ Arena.prototype.addPlayer2Channel = function(data) {
 		this.createChannel();
 	}
 
-	utils.myPrint('1 ~ Arena addPlayer2Channel ', data.userId, data.serverId);
-	if (!!data && !!data.userId && !!data.serverId) {
-		this.channel.add(data.userId, data.serverId);
+	utils.myPrint('1 ~ Arena addPlayer2Channel ', data.uid, data.sid);
+	if (!!data && !!data.uid && !!data.sid) {
+		this.channel.add(data.uid, data.sid);
 		return true;
 	}
 
@@ -72,9 +72,9 @@ Arena.prototype.removePlayerFromChannel = function(data) {
 		return false;
 	}
 
-	utils.myPrint('1 ~ Arena removePlayerFromChannel ', data.userId, data.serverId);
-	if (!!data && !!data.userId && !!data.serverId) {
-		this.channel.leave(data.userId, data.serverId);
+	utils.myPrint('1 ~ Arena removePlayerFromChannel ', data.uid, data.sid);
+	if (!!data && !!data.uid && !!data.sid) {
+		this.channel.leave(data.uid, data.sid);
 		return true;
 	}
 
@@ -171,12 +171,12 @@ Arena.prototype.getEnemyCampEntities = function(e) {
 	return this.getCampEntities(consts.CampType.WE);
 };
 
-Arena.prototype.isPlayerInArena = function(playerId) {
-	return !!this.players[playerId];
+Arena.prototype.isPlayerInArena = function(uid) {
+	return !!this.players[uid];
 };
 
 Arena.prototype.addPlayer = function(player) {
-	if (!!this.players[player.id]) {
+	if (!!this.players[player.uid]) {
 		return consts.ARENA.ENTER_ARENA_CODE.ALREADY_IN_ARENA;
 	}
 
@@ -185,13 +185,13 @@ Arena.prototype.addPlayer = function(player) {
 	}
 
 	player.enterArena(this.arenaId);
-	this.players[player.id] = player;
+	this.players[player.uid] = player;
 
 	return consts.ARENA.ENTER_ARENA_CODE.OK;
 };
 
-Arena.prototype.removePlayer = function(playerId, cb) {
-	var player = this.players[playerId];
+Arena.prototype.removePlayer = function(uid, cb) {
+	var player = this.players[uid];
 	if (!player) {
 		var ret = {result: consts.ARENA.FAILED};
 		utils.invokeCallback(cb, null, ret);
@@ -205,7 +205,7 @@ Arena.prototype.removePlayer = function(playerId, cb) {
 	}
 
 	this.removePlayerFromChannel(player);
-	delete this.players[playerId];
+	delete this.players[uid];
 	var ret = {result: consts.ARENA.OK};
 	utils.invokeCallback(cb, null, ret);
 	return true;
@@ -220,9 +220,9 @@ Arena.prototype.getAllPlayers = function() {
 	return _players;
 }
 
-Arena.prototype.pushLeaveMsg2All = function(leavePlayerId, cb) {
+Arena.prototype.pushLeaveMsg2All = function(leavePlayerUid, cb) {
 	var result = this.pushMsg2All('onPlayerLeaveArena', {
-		playerId: leavePlayerId
+		playerUid: leavePlayerUid
 	}, function(err, _) {
 		var ret = {result: consts.ARENA.OK};
 		cb(null, ret);

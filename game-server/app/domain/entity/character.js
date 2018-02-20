@@ -14,6 +14,7 @@ var Character = function(opts) {
 	this.died = false;
 	this.isMoving = false;
 	this.range = opts.range || 0;
+	this.attackRange = opts.attackRange || 0;
 	this.hp = opts.hp;
 	this.maxHp = opts.maxHp;
 	this.orientation = opts.orientation;

@@ -7,9 +7,9 @@ var Player = function(opts) {
 	Entity.call(this, opts);
 	this.id = opts.id;
 	this.type = EntityType.PLAYER;
-	this.userId = opts.uid;
+	this.uid = opts.uid;
 	this.name = opts.name;
-	this.serverId = opts.sid;
+	this.sid = opts.sid;
 	this.arenaId = consts.ARENA.ARENA_ID_NONE;
 };
 
