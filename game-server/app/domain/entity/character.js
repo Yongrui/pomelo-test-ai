@@ -1,8 +1,8 @@
 var util = require('util');
 var utils = require('../../util/utils');
 var Entity = require('./entity');
-var fightSkill = require('./../fightskill');
 var consts = require('../../consts/consts')
+var dataApi = require('../../util/dataApi');
 
 var gId = 1;
 
@@ -32,9 +32,9 @@ var Character = function(opts) {
 	this.haters = {};
 	this.buffs = [];
 	this.curSkill = 1;
-	this.fightSkills = {};
 
-	this.initFightSkill();
+	this.characterData = dataApi.character.findById(this.kindId);
+	this.fightSkills = {};
 };
 
 util.inherits(Character, Entity);
@@ -57,13 +57,6 @@ Character.prototype.addFightSkills = function(fightSkills) {
 	for (var i = 0; i < fightSkills.length; i++) {
 		var skill = fightskill.create(fightSkills[i]);
 		this.fightSkills[skill.skillId] = skill;
-	}
-};
-
-Character.prototype.initFightSkill = function() {
-	if (!this.fightSkills[this.curSkill]) {
-		var skill = fightSkill.create({skillId: 1, level: 1, playerId: this.entityId, type: 'attack'});
-		this.fightSkills[this.curSkill] = skill;
 	}
 };
 

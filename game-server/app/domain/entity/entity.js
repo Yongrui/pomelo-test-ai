@@ -7,6 +7,8 @@ var Entity = function (opts) {
 	EventEmitter.call(this);
 	this.entityId = opts.id || gId++;
 	this.entityName = opts.name;
+	this.kindId = opts.kindId;
+	this.kindName = opts.kindName;
 	this.camp = opts.camp;
 	this.arena = opts.arena;
 };

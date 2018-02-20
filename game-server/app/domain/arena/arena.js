@@ -32,6 +32,14 @@ function Arena (opts) {
 
 util.inherits(Arena, EventEmitter);
 
+Arena.prototype.initSoldiers = function(data) {
+
+};
+
+Arena.prototype.initPlayers = function(data) {
+
+};
+
 Arena.prototype.start = function() {
 	this.aiManager.start();
 	this.timer.run();

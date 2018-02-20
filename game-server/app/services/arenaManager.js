@@ -4,6 +4,7 @@ var consts = require('../consts/consts');
 var utils = require('../util/utils');
 var Soldier = require('../domain/entity/soldier');
 var Player = require('../domain/entity/player');
+var dataApi = require('../util/dataApi');
 
 var exp = module.exports;
 
@@ -84,6 +85,24 @@ exp.removeArenaById = function(arenaId) {
 	};
 };
 
+var buildCharacterData = function(kindId) {
+	var data = dataApi.character.findById(kindId);
+	if (!data) {
+		return null;
+	}
+
+	return {
+		kindId: data.id,
+		kindName: data.name,
+		name: data.name,
+		range: data.range,
+		hp: data.hp,
+		maxHp: data.hp,
+		walkSpeed: data.walkSpeed,
+		attackSpeed: data.attackSpeed
+	};
+};
+
 exp.randomEntity = function(uid) {
 	var record = getRecord(uid);
 	if (!record) {
@@ -111,28 +130,18 @@ exp.randomEntity = function(uid) {
 		camp = consts.CampType.ENEMY;
 	}
 
-	var x = utils.randomMN(0, 960);
-	var y = utils.randomMN(0, 640);
-	var range = 10;
-	var attackRange = 5;
-	var hp = utils.randomMN(10, 30);
-	var maxHp = hp;
-	var walkSpeed = utils.randomMN(30, 100);
-	var attackSpeed = 1;
-	var e = new Soldier({
-		name: 's',
-		camp: camp,
-		arena: arenaObj,
-		x: x,
-		y: y,
-		range: range,
-		attackRange: attackRange,
-		hp: hp,
-		maxHp: maxHp,
-		walkSpeed: walkSpeed,
-		attackSpeed: attackSpeed
-	});
-	e.entityName = 's' + e.entityId;
+	var kindId = utils.random01() > 0.5 ? 201 : 101;
+	var data = buildCharacterData(kindId);
+	if (!data) {
+		return false;
+	}
+	data.x = utils.randomMN(0, 960);
+	data.y = utils.randomMN(0, 640);
+	data.attackRange = 5;
+	data.camp = camp;
+	data.arena = arenaObj;
+	var e = new Soldier(data);
+	e.entityName = e.kindName + e.entityId;
 
 	return arenaObj.addEntity(e);
 };
