@@ -113,14 +113,18 @@
 		createjs.Tween.get(this).to({x: ex, y: ey}, time).call(cb, [time], this);
 	};
 
-	p.attack = function () {
+	p.attack = function (data) {
 		this.stopWholeAnimations();
 		this.clearPath();
+		this.x = data.x;
+		this.y = data.y;
 	};
 
-	p.died = function () {
+	p.died = function (data) {
 		this.stopWholeAnimations();
 		this.clearPath();
+		this.x = data.x;
+		this.y = data.y;
 	};
 
 	p.update = function(data) {

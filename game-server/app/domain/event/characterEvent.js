@@ -41,8 +41,8 @@ module.exports.addEventForCharacter = function(character) {
 		}
 
 		arena.pushMsg2All('onAttack', {
-			attacker: attacker.entityId,
-			target: target.entityId,
+			attacker: attacker.toJSON4Attack(),
+			target: target.toJSON4Attack(),
 			result: args.result,
 			skillId: args.skillId
 		});

@@ -39,3 +39,11 @@ Soldier.prototype.toJSON = function() {
 		walkSpeed: this.walkSpeed
 	};
 };
+
+Soldier.prototype.toJSON4Attack = function() {
+	return {
+		entityId: this.entityId,
+		x: this.x,
+		y: this.y
+	};
+};

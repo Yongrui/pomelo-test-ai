@@ -62,21 +62,19 @@ function start () {
 	}
 
 	function attack (data) {
-		var attackerId = data.attacker;
-		var targetId = data.target;
-		var attacker = map.getEntity(attackerId);
-		var target = map.getEntity(targetId);
+		var attacker = map.getEntity(data.attacker.entityId);
+		var target = map.getEntity(data.target.entityId);
 		if (!attacker || !target) {
 			return;
 		}
 
-		attacker.attack();
+		attacker.attack(data.attacker);
 
 		var result = data.result.result;
 		if (result === AttackResult.SUCCESS || result === AttackResult.KILLED) {
 			target.update({damage: data.result.damage});
 			if (result === AttackResult.KILLED) {
-				target.died();
+				target.died(data.target);
 			}
 		}
 	}
