@@ -1,6 +1,7 @@
-var Player = require('../../../domain/entity/player');
 var pomelo = require('pomelo');
 var utils = require('../../../util/utils');
+
+// var gID = 0;
 
 module.exports = function(app) {
 	return new Handler(app);
@@ -19,17 +20,24 @@ var Handler = function(app) {
  * @return {Void}
  */
 Handler.prototype.entry = function(msg, session, next) {
-	var uid = '123';
+	// var uid = 'lyr' + (++gID);
 	var sid = this.app.getServerId();
-	session.bind(uid);
-	session.on('closed', onUserLeave.bind(null, this.app));
-	var param = {
-		uid: uid,
-		sid: sid
-	};
-	this.app.rpc.arena.arenaRemote.createArena(session, param, function(err, msg) {
-		next(null, msg);
+	var opts = {};
+	opts.sid = sid;
+	this.app.rpc.manager.userRemote.newUser(session, opts, function(err, user) {
+		session.bind(user.id);
+		session.on('closed', onUserLeave.bind(null, this.app));
+		next(null, user);
 	});
+	
+	// var param = {
+	// 	uid: uid,
+	// 	sid: sid
+	// };
+	// this.app.rpc.arena.arenaRemote.createArena(session, param, function(err, msg) {
+	// 	next(null, msg);
+	// });
+	
 };
 
 var onUserLeave = function (app, session) {
@@ -45,7 +53,12 @@ var onUserLeave = function (app, session) {
 	// });
 	// app.rpc.chat.chatRemote.kick(session, session.uid, null);
 	
-	app.rpc.arena.arenaRemote.kickOut(session, {uid: session.uid}, function(err, ret) {
+	var kickUid = session.uid;
+	app.rpc.arena.arenaRemote.kickOut(session, {uid: kickUid}, function(err, ret) {
 		utils.myPrint('1 ~ kickOut ', err, ret);
+	});
+
+	app.rpc.manager.userRemote.kickOut(session, {uid: kickUid}, function(err, ret) {
+		utils.myPrint('2 ~ kickOut ', err, ret);
 	});
 };

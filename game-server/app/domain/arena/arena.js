@@ -8,6 +8,7 @@ var channelUtil = require('../../util/channelUtil');
 var Timer = require('./timer');
 var EventEmitter = require('events').EventEmitter;
 var util = require('util');
+var Player = require('../entity/player');
 
 function Arena (opts) {
 	EventEmitter.call(this);
@@ -37,7 +38,24 @@ Arena.prototype.initSoldiers = function(data) {
 };
 
 Arena.prototype.initPlayers = function(data) {
-
+	var data1 = {};
+	data1.uid = data.uid;
+	data1.sid = data.sid;
+	var player1 = new Player(data1);
+	var ret = this.addPlayer(player1);
+	utils.myPrint('1 ~ initPlayers ', ret);
+	if (ret !== consts.ARENA.ENTER_ARENA_CODE.OK) {
+		return ret;
+	}
+	if (!!data.opuid && !!data.opsid) {
+		var data2 = {};
+		data2.uid = data.opuid;
+		data2.sid = data.opsid;
+		var player2 = new Player(data2);
+		ret = this.addPlayer(player2);
+	}
+	utils.myPrint('2 ~ initPlayers ', ret);
+	return ret;
 };
 
 Arena.prototype.start = function() {

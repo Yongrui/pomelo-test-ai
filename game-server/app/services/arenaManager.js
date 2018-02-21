@@ -19,6 +19,13 @@ var addRecord = function(arenaId, data) {
 		arenaId: arenaId
 	};
 	uidMap[data.uid] = record;
+	if (!!data.opuid && !!data.opsid) {
+		uidMap[data.opuid] = {
+			uid: data.opuid,
+			sid: data.opsid,
+			arenaId: arenaId
+		};
+	}
 	utils.myPrint('addRecord ', JSON.stringify(uidMap));
 };
 
@@ -40,7 +47,7 @@ var getRecord = function(uid) {
 };
 
 exp.createArena = function(data) {
-	if (checkDuplicate(data.uid)) {
+	if (checkDuplicate(data.uid) || checkDuplicate(data.opuid)) {
 		return {
 			result: consts.ARENA.ENTER_ARENA_CODE.ALREADY_IN_ARENA
 		};
@@ -49,8 +56,7 @@ exp.createArena = function(data) {
 		arenaId: ++gArenaId,
 		map: new Map()
 	});
-	var player = new Player(data);
-	var result = arenaObj.addPlayer(player);
+	var result = arenaObj.initPlayers(data);
 	if (result === consts.ARENA.ENTER_ARENA_CODE.OK) {
 		gArenaObjDict[arenaObj.arenaId] = arenaObj;
 		addRecord(arenaObj.arenaId, data);

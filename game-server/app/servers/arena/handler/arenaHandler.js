@@ -17,9 +17,23 @@ Handler.prototype.createArena = function(msg, session, next) {
 		uid: uid,
 		sid: sid
 	};
-	this.app.rpc.arena.arenaRemote.createArena(session, param, function(err, msg) {
-		next(null, msg);
-	});
+	var self = this;
+	this.app.rpc.manager.userRemote.match(session, param, function(err, ret) {
+		if (!!err) {
+			next(err, ret);
+			return;
+		}
+		var opuser = ret;
+		var param = {
+			uid: uid,
+			sid: sid,
+			opuid: opuser.id,
+			opsid: opuser.sid
+		};
+		self.app.rpc.arena.arenaRemote.createArena(session, param, function(err, msg) {
+			next(null, msg);
+		});
+	})
 };
 
 Handler.prototype.leaveArena = function(msg, session, next) {
@@ -36,6 +50,7 @@ Handler.prototype.kickOut = function(msg, session, next) {
 
 Handler.prototype.randomEntity = function(msg, session, next) {
 	var uid = session.uid;
+	utils.myPrint('1 ~ randomEntity ', uid);
 	if (arenaManager.randomEntity(uid)) {
 		next(null, {
 			code: 200
