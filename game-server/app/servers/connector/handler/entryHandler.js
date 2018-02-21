@@ -24,9 +24,10 @@ Handler.prototype.entry = function(msg, session, next) {
 	var sid = this.app.getServerId();
 	var opts = {};
 	opts.sid = sid;
+	var self = this;
 	this.app.rpc.manager.userRemote.newUser(session, opts, function(err, user) {
 		session.bind(user.id);
-		session.on('closed', onUserLeave.bind(null, this.app));
+		session.on('closed', onUserLeave.bind(null, self.app));
 		next(null, user);
 	});
 	
