@@ -1,0 +1,55 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "cheer",
+  "_objFlags": 0,
+  "_rawFiles": null,
+  "_duration": 0.6,
+  "sample": 10,
+  "speed": 1,
+  "wrapMode": 2,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "1880343d-7081-4b83-a1da-64e3eb1ad8f1"
+            }
+          },
+          {
+            "frame": 0.1,
+            "value": {
+              "__uuid__": "96959c23-68ee-405b-936c-a08fb1187a65"
+            }
+          },
+          {
+            "frame": 0.2,
+            "value": {
+              "__uuid__": "63ad8772-88f0-4c72-9ead-71af96c869a8"
+            }
+          },
+          {
+            "frame": 0.3,
+            "value": {
+              "__uuid__": "d5a35c68-61a5-4015-b8dd-56c2b6676b2e"
+            }
+          },
+          {
+            "frame": 0.4,
+            "value": {
+              "__uuid__": "2d643e17-cde5-446f-bc34-991c4ce24b0e"
+            }
+          },
+          {
+            "frame": 0.5,
+            "value": {
+              "__uuid__": "ab5d1e65-29b2-4f5e-8d26-1f2d25452e69"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}
