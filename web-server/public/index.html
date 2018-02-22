@@ -24,7 +24,7 @@
     <script src="js/demo.js"></script>
     <script type="text/javascript">
       var pomelo = window.pomelo;
-      var host = "127.0.0.1";
+      var host = "192.168.7.188";
       var port = "3010";
       function show() {
         pomelo.init({
@@ -68,10 +68,10 @@
   <body>
     <div class="g-doc">
       <div class="g-button">
-        <input id="test" type="button" value="Test Game Server" onclick="show()"/>
-        <input id="test" type="button" value="Test Game Server" onclick="addEntity()"/>
-        <input id="test" type="button" value="Test Game Server" onclick="startArena()"/>
-        <input id="test" type="button" value="Test Game Server" onclick="newArena()"/>
+        <input id="test" type="button" value="Connect Game Server" onclick="show()"/>
+        <input id="test" type="button" value="New Arena" onclick="newArena()"/>
+        <input id="test" type="button" value="Add Entity" onclick="addEntity()"/>
+        <input id="test" type="button" value="Fight" onclick="startArena()"/>
       </div>
     </div>
     <canvas id="demoCanvas" width="960" height="640">
