@@ -2,6 +2,7 @@ var util = require('util');
 var utils = require('../../util/utils');
 var Entity = require('./entity');
 var consts = require('../../consts/consts')
+var formula = require('../../consts/formula')
 var dataApi = require('../../util/dataApi');
 
 var gId = 1;
@@ -201,7 +202,30 @@ Character.prototype.getMostHater = function() {
 		return null;
 	}
 
-	return Number(entityId)
+	return Number(entityId);
+};
+
+Character.prototype.getMostHaters = function() {
+	var entityId = 0,
+		hate = 0,
+		result = [];
+	for (var id in this.haters) {
+		if (this.haters[id] > hate) {
+			entityId = id;
+			hate = this.haters[id];
+		}
+	}
+	if (entityId <= 0) {
+		return null;
+	}
+
+	for (var id in this.haters) {
+		if (this.haters[id] === hate) {
+			result.push(Number(id));
+		}
+	}
+
+	return result;
 };
 
 Character.prototype.forgetHater = function(entityId) {

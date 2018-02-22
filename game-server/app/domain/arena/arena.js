@@ -169,6 +169,17 @@ Arena.prototype.getEntity = function(entityId) {
 	return entity;
 };
 
+Arena.prototype.getEntities = function(es) {
+	var result = [], e;
+	for (var i = 0; i < es.length; i++) {
+		e = this.getEntity(es[i]);
+		if (e) {
+			result.push(e);
+		}
+	};
+	return result;
+};
+
 Arena.prototype.getAllEntities = function() {
 	return this.entities;
 };
