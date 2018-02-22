@@ -58,6 +58,10 @@ Arena.prototype.initPlayers = function(data) {
 	return ret;
 };
 
+Arena.prototype.isRunning = function() {
+	return this.timer.isRunning();
+};
+
 Arena.prototype.start = function() {
 	this.aiManager.start();
 	this.timer.run();

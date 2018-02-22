@@ -5,16 +5,19 @@ var Timer = function(opts) {
 	this.interval = opts.interval || 100;
 	this.tickCnt = 0;
 	this.duraion = opts.duraion || 60 * 1000 * 3;
+	this.running = false;
 };
 
 module.exports = Timer;
 
 Timer.prototype.run = function() {
 	this.handle = setInterval(this.tick.bind(this), this.interval);
+	this.running = true;
 };
 
 Timer.prototype.close = function() {
 	clearInterval(this.handle);
+	this.running = false;
 };
 
 Timer.prototype.tick = function() {
@@ -24,6 +27,10 @@ Timer.prototype.tick = function() {
 
 	if ((++this.tickCnt * this.interval) >= this.duraion) {
 	}
+};
+
+Timer.prototype.isRunning = function() {
+	return this.running;
 };
 
 Timer.prototype.addAction = function(action) {

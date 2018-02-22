@@ -24,14 +24,7 @@ Action.prototype.doAction = function() {
 	var result = character.getMostHaters();
 	if (!!result && result.length > 0) {
 		var es = arena.getEntities(result);
-		var dist, cost = 999999;
-		for (var i = 0; i < es.length; i++) {
-			dist = formula.distance(character.x, character.y, es[i].x, es[i].y);
-			if (dist < cost) {
-				target = es[i].entityId;
-				cost = dist;
-			}
-		};
+		target = getNearestTarget(character, es);
 	}
 	character.target = target;
 	if (!!character.target) {
@@ -43,3 +36,16 @@ Action.prototype.doAction = function() {
 
 	return bt.RES_FAIL;
 };
+
+function getNearestTarget (character, es) {
+	var dist, cost = 999999;
+	var target = null;
+	for (var i = 0; i < es.length; i++) {
+		dist = formula.distance(character.x, character.y, es[i].x, es[i].y);
+		if (dist < cost) {
+			target = es[i].entityId;
+			cost = dist;
+		}
+	};
+	return target;
+}

@@ -196,7 +196,7 @@ exp.startArena = function(uid) {
 
 	var arenaId  = record.arenaId;
 	var arenaObj = gArenaObjDict[arenaId];
-	if (arenaObj) {
+	if (arenaObj && !arenaObj.isRunning()) {
 		arenaObj.start();
 		return true;
 	}
