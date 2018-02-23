@@ -119,20 +119,22 @@ function start () {
 		console.log('onCloseArena ', data);
 		map.removeAllEntities();
 	});
-
-
-	// var btn1 = document.getElementById("test1");
-	// var btn2 = document.getElementById("test2");
-	// var btn3 = document.getElementById("test3");
-	// var btn4 = document.getElementById("test4");
-	// btn.onclick = function () {
-	// 	pomelo.init({
-	// 		host: host,
-	// 		port: port,
-	// 		log: true
-	// 	}, function() {
-	// 		pomelo.request("connector.entryHandler.entry", "hello pomelo", function(data) {
-	// 		});
-	// 	});
-	// }
 }
+
+$(function() {
+	var pomelo = window.pomelo;
+	var host = "127.0.0.1";
+	var port = "3010";
+	function connect() {
+		pomelo.init({
+			host: host,
+			port: port,
+			log: true
+		}, function() {
+		pomelo.request("connector.entryHandler.entry", "hello pomelo", function(data) {
+				console.log(data);
+			});
+		});
+	}
+	connect();
+});
