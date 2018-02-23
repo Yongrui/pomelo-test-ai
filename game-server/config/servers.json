@@ -8,6 +8,9 @@
     ],
     "manager": [
     {"id": "manager-server-1", "host": "127.0.0.1", "port": 3350}
+    ],
+    "chat": [
+    {"id": "chat-server-1", "host": "127.0.0.1", "port": 3450}
     ]
   },
   "production":{
@@ -19,6 +22,9 @@
     ],
     "manager": [
     {"id": "manager-server-1", "host": "127.0.0.1", "port": 3350}
+    ],
+    "chat": [
+    {"id": "chat-server-1", "host": "127.0.0.1", "port": 3450}
     ]
   }
 }

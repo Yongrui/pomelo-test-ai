@@ -1,5 +1,7 @@
 var pomelo = require('pomelo');
 var utils = require('../../../util/utils');
+var async = require('async');
+var channelUtil = require('../../../util/channelUtil');
 
 // var gID = 0;
 
@@ -20,39 +22,42 @@ var Handler = function(app) {
  * @return {Void}
  */
 Handler.prototype.entry = function(msg, session, next) {
-	// var uid = 'lyr' + (++gID);
-	var sid = this.app.getServerId();
-	var opts = {};
-	opts.sid = sid;
+	var sid = this.app.get('serverId');
+	var opts = {sid: sid};
 	var self = this;
-	this.app.rpc.manager.userRemote.newUser(session, opts, function(err, user) {
-		session.bind(user.id);
-		session.on('closed', onUserLeave.bind(null, self.app));
-		next(null, user);
+	var user;
+
+	async.waterfall([
+		function (cb) {
+			self.app.rpc.manager.userRemote.newUser(session, opts, cb);
+		}, function (u, cb) {
+			user = u;
+			self.app.get('sessionService').kick(user.id, cb);
+		}, function (cb) {
+			session.bind(user.id, cb);
+		}, function (cb) {
+			session.on('closed', onUserLeave.bind(null, self.app, user));
+			self.app.rpc.chat.chatRemote.add(session, user,
+				channelUtil.getGlobalChannelName(), true, cb);
+		}, function (users, cb) {
+			self.app.rpc.manager.userRemote.getUsers(session, users, cb);
+		}
+	], function (err, users) {
+		if (!!err) {
+			next(null, {code: 500});
+			return;
+		}
+
+		next(null, {code: 200, user: user, users: users});
 	});
-	
-	// var param = {
-	// 	uid: uid,
-	// 	sid: sid
-	// };
-	// this.app.rpc.arena.arenaRemote.createArena(session, param, function(err, msg) {
-	// 	next(null, msg);
-	// });
-	
 };
 
-var onUserLeave = function (app, session) {
+var onUserLeave = function (app, user, session) {
 	if(!session || !session.uid) {
 		return;
 	}
 
 	utils.myPrint('1 ~ OnUserLeave is running ...');
-	// app.rpc.area.playerRemote.playerLeave(session, {playerId: session.get('playerId'), instanceId: session.get('instanceId')}, function(err){
-	// 	if(!!err){
-	// 		logger.error('user leave error! %j', err);
-	// 	}
-	// });
-	// app.rpc.chat.chatRemote.kick(session, session.uid, null);
 	
 	var kickUid = session.uid;
 	app.rpc.arena.arenaRemote.kickOut(session, {uid: kickUid}, function(err, ret) {
@@ -61,5 +66,9 @@ var onUserLeave = function (app, session) {
 
 	app.rpc.manager.userRemote.kickOut(session, {uid: kickUid}, function(err, ret) {
 		utils.myPrint('2 ~ kickOut ', err, ret);
+	});
+
+	app.rpc.chat.chatRemote.kick(session, user, channelUtil.getGlobalChannelName(), function (err, ret) {
+		utils.myPrint('3 ~ kickOut ', err, ret);
 	});
 };

@@ -1,6 +1,6 @@
 var User = function(opts) {
     this.id = opts.id;
-    this.name = opts.name || this.id;
+    this.name = opts.name || ('unknown-' + this.id);
     this.sid = opts.sid;
 };
 
@@ -11,5 +11,5 @@ User.prototype.toJSON = function() {
         id: this.id,
         sid: this.sid,
         name: this.name
-    }
-}
+    };
+};

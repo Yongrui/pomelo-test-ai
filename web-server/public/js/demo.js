@@ -118,5 +118,21 @@ function start () {
 	pomelo.on('onCloseArena', function(data) {
 		console.log('onCloseArena ', data);
 		map.removeAllEntities();
-	})
+	});
+
+
+	// var btn1 = document.getElementById("test1");
+	// var btn2 = document.getElementById("test2");
+	// var btn3 = document.getElementById("test3");
+	// var btn4 = document.getElementById("test4");
+	// btn.onclick = function () {
+	// 	pomelo.init({
+	// 		host: host,
+	// 		port: port,
+	// 		log: true
+	// 	}, function() {
+	// 		pomelo.request("connector.entryHandler.entry", "hello pomelo", function(data) {
+	// 		});
+	// 	});
+	// }
 }

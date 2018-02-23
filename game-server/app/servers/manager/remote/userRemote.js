@@ -26,3 +26,8 @@ UserRemote.prototype.match = function(args, cb) {
     }
     utils.invokeCallback(cb, null, op);
 };
+
+UserRemote.prototype.getUsers = function(args, cb) {
+    var users = userManager.getUsers(args);
+    utils.invokeCallback(cb, null, users);
+};

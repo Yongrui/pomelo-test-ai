@@ -3,6 +3,7 @@
     "version": "0.0.1",
     "private": false,
     "dependencies": {
+        "async": "^2.6.0",
         "pomelo": "2.2.5",
         "pomelo-bt": "0.0.1",
         "pomelo-collection": "^0.1.0",
