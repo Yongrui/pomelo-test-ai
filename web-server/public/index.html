@@ -7,68 +7,84 @@
 		</title>
 		<link type="text/css" rel="stylesheet" href="css/base.css" />
 		<script src="js/lib/build/build.js" type="text/javascript"></script>
-		<script src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
-		<script src="https://code.createjs.com/tweenjs-0.6.2.min.js"></script>
 		<script type="text/javascript">
 			require('boot');
 		</script> 
 		<link type="text/css" rel="stylesheet" href="lib/popModal.min.css" />
+		<script src="lib/createjs.min.js"></script>
 		<script src="lib/jquery-3.3.1.min.js"></script>
 		<script src="lib/popModal.min.js"></script>
 		<script src="js/utils.js"></script>
 		<script src="js/ball.js"></script>
 		<script src="js/map.js"></script>
 		<script src="js/demo.js"></script>
-		<!-- <script type="text/javascript">
-			var pomelo = window.pomelo;
-			var host = "127.0.0.1";
-			var port = "3010";
-			function show() {
-				pomelo.init({
-					host: host,
-					port: port,
-					log: true
-				}, function() {
-				pomelo.request("connector.entryHandler.entry", "hello pomelo", function(data) {
-						// alert(data.msg);
-						console.log(data);
-					});
-				});
+		<style type="text/css">
+			#dialog-user, #dialog-users {
+				width: 49%;
+				float: left;
 			}
-
-			function addEntity() {
-				pomelo.request("arena.arenaHandler.randomEntity", null, function(data) {
-					
-				})
+			#dialog-user {
+				padding-right: 20px;
+				border-right: 1px solid #ddd;
 			}
-
-			function startArena() {
-				pomelo.request("arena.arenaHandler.start", null, function(data) {
-					
-				})
+			#dialog-users {
+				padding-left: 20px;
+				height: 160px;
+				overflow: auto;
 			}
-
-			function newArena() {
-				pomelo.request("arena.arenaHandler.createArena", "", function(data) {
-					console.log(data);
-				});
+			#dialog-up, #dialog-down {
+				height: 80px;
+				line-height: 5;
+				text-align: center;
 			}
-		</script> -->
+			#dialog-up {
+				border-bottom: 1px solid #ddd;
+			}
+			.online-user {
+				line-height: 30px;
+				border-bottom: 1px solid #ddd;
+			}
+			.online-user button {
+				margin-right: 20px;
+				margin-top: 5px;
+				float: right;
+			}
+		</style>
 	</head>
 	<body>
-		<!-- <div class="g-doc">
+		<div class="g-doc">
 			<div class="g-button">
-				<input id="test1" type="button" value="Connect Game Server" onclick="show()"/>
-				<input id="test2" type="button" value="New Arena" onclick="newArena()"/>
-				<input id="test3" type="button" value="Add Entity" onclick="addEntity()"/>
-				<input id="test4" type="button" value="Fight" onclick="startArena()"/>
+				<span id="user-name"></span>
+				<input id="enter-room" type="button" value="Enter room"/>
 			</div>
-		</div> -->
+		</div>
 		<canvas id="demoCanvas" width="960" height="640">
 		alternate content
 		</canvas>
-		<!-- <script type="text/javascript">
-			start();
-		</script> -->
+		<div style='display:none'>
+			<div id="confirm-modal">
+				<div id="confirm-content" class="confirmModal_content">
+				</div>
+				<div class="confirmModal_footer">
+					<button id="btn-ok" type="button" class="btn btn-primary" data-confirmmodal-but="ok">Confirm</button>
+					<button id="btn-cancel" type="button" class="btn btn-default" data-confirmmodal-but="cancel">Cancel</button>
+				</div>
+			</div>
+			<div id="dialog-modal" class="dialog_content">
+				<div id="dialog-title" class="dialogModal_header">Room</div>
+				<div id="dialog-content" class="dialogModal_content">
+					<div id="dialog-user">
+						<div id="dialog-up"></div>
+						<div id="dialog-down"></div>
+					</div>
+					<div id="dialog-users">
+					</div>
+				</div>
+				<div class="dialogModal_footer">
+					<button type="button" class="btn btn-primary" data-dialogmodal-but="ok">Ok</button>
+					<button type="button" class="btn btn-default" data-dialogmodal-but="cancel">Cancel</button>
+				</div>
+			</div>
+		</div>
 	</body>
 </html>

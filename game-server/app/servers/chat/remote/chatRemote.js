@@ -64,10 +64,9 @@ ChatRemote.prototype.kick = function(user, name, cb) {
 	if( !! channel) {
 		channel.leave(user.id, user.sid);
 	}
-	var username = user.name;
 	var param = {
 		route: 'onLeaveChatUser',
-		user: username
+		user: user
 	};
 	channel.pushMessage(param);
 	cb();

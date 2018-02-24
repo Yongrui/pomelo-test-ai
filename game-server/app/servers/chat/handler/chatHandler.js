@@ -19,3 +19,7 @@ var handler = Handler.prototype;
  */
 handler.send = function(msg, session, next) {
 };
+
+handler.createRoom = function (msg, session, next) {
+	
+}
