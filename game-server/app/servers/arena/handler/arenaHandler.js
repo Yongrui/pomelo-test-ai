@@ -1,6 +1,7 @@
 var arenaManager = require('../../../services/arenaManager');
 var pomelo = require('pomelo');
 var utils = require('../../../util/utils');
+var consts = require('../../../consts/consts');
 
 module.exports = function(app) {
 	return new Handler(app);
@@ -75,25 +76,43 @@ Handler.prototype.invite = function(msg, session, next) {
 		next(null, {code: 500});
 		return;
 	}
-	// var uids = [uid, opuid];
-	// this.app.rpc.manager.userRemote.getUsers(session, uids, function (err, users) {
-	// 	var param = {
-	// 		uid: users[0].id,
-	// 		sid: users[0].sid,
-	// 		opuid: users[1].id,
-	// 		opsid: users[1].sid
-	// 	};
-	// 	var result = arenaManager.createArena(param);
-	// 	next(null, result);
-	// });
+
+	if (!arenaManager.invite(uid, opuid)) {
+		next(null, {code: 500});
+		return;
+	}
 	
 	var channelService = this.app.get('channelService');
-	channelService.pushMessageByUids("onBeInvited", {from: uid}, [{uid: opuid, sid: opsid}])
+	channelService.pushMessageByUids("onBeInvited", {from: uid}, [{uid: opuid, sid: opsid}]);
 	next(null, {
-		route: msg.route
+		code: 200
 	});
 };
 
 Handler.prototype.acceptInvite = function(msg, session, next) {
-	
+	var uid = session.uid;
+	var fromId = msg.from;
+	var _this = this;
+	this.app.rpc.manager.userRemote.getUsers(session, [fromId, uid], function(err, users) {
+		if (err) {
+			return;
+		}
+
+		var param = {
+			uid: users[0].id,
+			sid: users[0].sid,
+			opuid: users[1].id,
+			opsid: users[1].sid
+		};
+		var result = arenaManager.createArena(param);
+		if (result.result === consts.ARENA.ENTER_ARENA_CODE.OK) {
+			var channelService = _this.app.get('channelService');
+			channelService.pushMessageByUids("onCreateArena", 
+				{from: param.uid, to: param.opuid}, [
+				{uid: param.uid, sid: param.sid}, 
+				{uid: param.opuid, sid: param.opsid}
+			]);
+		}
+		next();
+	});
 };

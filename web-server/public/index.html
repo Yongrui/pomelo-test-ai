@@ -10,10 +10,10 @@
 		<script type="text/javascript">
 			require('boot');
 		</script> 
-		<link type="text/css" rel="stylesheet" href="lib/popModal.min.css" />
+		<link type="text/css" rel="stylesheet" href="lib/popModal.css" />
 		<script src="lib/createjs.min.js"></script>
-		<script src="lib/jquery-3.3.1.min.js"></script>
-		<script src="lib/popModal.min.js"></script>
+		<script src="lib/jquery.min.js"></script>
+		<script src="lib/popModal.js"></script>
 		<script src="js/utils.js"></script>
 		<script src="js/ball.js"></script>
 		<script src="js/map.js"></script>
@@ -38,10 +38,12 @@
 		</style>
 	</head>
 	<body>
-		<div class="g-doc">
-			<div class="g-button">
+		<div>
+			<div>
 				<span id="user-name"></span>
-				<input id="enter-room" type="button" value="Enter room"/>
+				<input id="inviteUser" type="button" value="Invite"/>
+				<input id="startArena" type="button" value="Start"/>
+				<input id="addEntity" type="button" value="Add"/>
 			</div>
 		</div>
 		<canvas id="demoCanvas" width="960" height="640">
@@ -49,22 +51,23 @@
 		</canvas>
 		<div style='display:none'>
 			<div id="confirm-modal">
-				<div id="confirm-content" class="confirmModal_content">
+				<div id="dialog-title" class="dialogModal_header">Tips</div>
+				<div id="confirm-content" class="dialogModal_content">
 				</div>
-				<div class="confirmModal_footer">
-					<button id="btn-ok" type="button" class="btn btn-primary" data-confirmmodal-but="ok">Confirm</button>
-					<button id="btn-cancel" type="button" class="btn btn-default" data-confirmmodal-but="cancel">Cancel</button>
+				<div class="dialogModal_footer">
+					<button id="btn-ok" type="button" data-dialogmodalbut="ok">Confirm</button>
+					<button id="btn-cancel" type="button" data-dialogmodalbut="cancel">Cancel</button>
 				</div>
 			</div>
 			<div id="dialog-modal" class="dialog_content">
-				<div id="dialog-title" class="dialogModal_header">Room</div>
+				<div id="dialog-title" class="dialogModal_header">Invite</div>
 				<div id="dialog-content" class="dialogModal_content">
 					<div id="dialog-users">
 					</div>
 				</div>
 				<div class="dialogModal_footer">
-					<button type="button" class="btn btn-primary" data-dialogmodal-but="ok">Ok</button>
-					<button type="button" class="btn btn-default" data-dialogmodal-but="cancel">Cancel</button>
+					<button type="button" data-dialogmodalbut="ok">Ok</button>
+					<button type="button" data-dialogmodalbut="cancel">Cancel</button>
 				</div>
 			</div>
 		</div>

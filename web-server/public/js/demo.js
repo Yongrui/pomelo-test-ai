@@ -1,3 +1,5 @@
+(function(argument) {
+
 
 var pomelo, stage, arena;
 var host = "127.0.0.1";
@@ -23,9 +25,17 @@ $(function() {
 	createjs.Ticker.setFPS(60);
 	createjs.Ticker.addEventListener("tick", stage);
 
-	$('#enter-room').click(function () {
+	$('#inviteUser').click(function () {
 		createRoom();
 	});
+	$('#startArena').click(function() {
+		start();
+	});
+	$('#addEntity').click(function() {
+		randomEntity();
+	});
+	$('#startArena').hide();
+	$('#addEntity').hide();
 
 	connect();
 
@@ -69,26 +79,79 @@ $(function() {
 		console.log('onLeaveChatUser ', data);
 		onRemoveUser(data.user);
 	});
+
+	pomelo.on('onBeInvited', function(data) {
+		console.log('onBeInvited ', data);
+		onBeInvited(data.from);
+	});
+
+	pomelo.on('onCreateArena', function(data) {
+		console.log('onCreateArena ', data);
+		onCreateArena(data);
+	});
 });
 
+function randomEntity() {
+	pomelo.notify('arena.arenaHandler.randomEntity');
+}
+
+function start() {
+	pomelo.notify('arena.arenaHandler.start');
+}
+
+function onBeInvited(uid) {
+	var u = getUser(uid);
+	console.log('onBeInvited ', u);
+	if (!!u) {
+		showTips('Invited from ' + u.name, function(argument) {
+			pomelo.notify('arena.arenaHandler.acceptInvite', {from: uid});
+		});
+	}
+}
+
 function onAddUser (user) {
-	var html = '<div id="user-' + users[i].id + '" class="online-user"><span>' + users[i].name + '</span><button data-id=' + users[i].id + '>Invite</button></div>'
+	users.push(user);
+	var html = '<div id="user-' + user.id + '" class="online-user"><span>' + user.name + '</span><button data-id=' + user.id + '>Invite</button></div>'
 	$('#dialog-users').append(html);
+	console.log('onAddUser ', html);
+	initInviteClick();
 }
 
 function onRemoveUser (user) {
-	$('#dialog-users'.remove('#user-' + user.id));
-	if (!!opuser && opuser.id === user.id) {
-		$('#dialog-down').text('');
-		opuser = null;
+	$('#dialog-users').remove('#user-' + user.id);
+	for (var i = 0; i < users.length; i++) {
+		if (users[i].id === user.id) {
+			users.splice(i, 1);
+			return;
+		}
+	}
+}
+
+function onCreateArena(data) {
+	var user1 = getUser(data.from);
+	var user2 = getUser(data.to);
+	if (!!user1 && !!user2) {
+		closeModal();
+		createArena();
+		$('#inviteUser').hide();
+		$('#user-name').text(user1.name + ' vs ' + user2.name);
+		$('#startArena').show();
+		$('#addEntity').show();
 	}
 }
 
 function onCloseArena (data) {
 	removeArena();
+	$('#inviteUser').show();
+	$('user-name').text(user.name);
+	$('#startArena').hide();
+	$('#addEntity').hide();
 }
 
 function onEntityMove (data) {
+	if (!arena) {
+		return;
+	}
 	var entityId = data.entityId;
 	var entity = arena.getEntity(entityId);
 	if (!entity) {
@@ -103,6 +166,9 @@ function onEntityMove (data) {
 }
 
 function onEntityAttack(data) {
+	if (!arena) {
+		return;
+	}
 	var attacker = arena.getEntity(data.attacker.entityId);
 	var target = arena.getEntity(data.target.entityId);
 	if (!attacker || !target) {
@@ -123,6 +189,9 @@ function onEntityAttack(data) {
 }
 
 function onEntityStand(data) {
+	if (!arena) {
+		return;
+	}
 	var entityId = data.entityId;
 	var entity = arena.getEntity(entityId);
 	if (!entity) {
@@ -133,6 +202,9 @@ function onEntityStand(data) {
 }
 
 function onRemoveEntities(entities) {
+	if (!arena) {
+		return;
+	}
 	for (var i = 0; i < entities.length; i++) {
 		arena.removeEntity(entities[i]);
 	};
@@ -154,6 +226,9 @@ function buildEntity(data) {
 }
 
 function onAddEntities(entities) {
+	if (!arena) {
+		return;
+	}
 	for (var i = 0; i < entities.length; i++) {
 		var e = buildEntity(entities[i]);
 		arena.addEntity(e);
@@ -201,28 +276,51 @@ function onConnectServer(data) {
 	showTips('Welcome ' + user.name);
 }
 
-function showTips(content) {
-	$('#confirm-content').html(content);
-	$('#confirm-modal').confirmModal({
-		topOffset: 0,
-		top: 0,
-		onOkBut: function(event, el) {},
-		onLoad: function(el) {},
+function showTips(content, okcb) {
+	$('#confirm-content').text(content);
+	$('#confirm-modal').dialogModal({
+		onOkBut: function(event, el) {
+			if (!!okcb) {
+				okcb(event, el);
+			}
+		},
+		onCancelBut: function(event, el, current) {},
+		onLoad: function(el) {
+		},
 		onClose: function(el) {}
 	});
 }
 
+function closeModal() {
+	$('#dialog-modal').dialogModal('hide');
+	$('#confirm-modal').dialogModal('hide');
+}
+
 function createRoom () {
 	$('#dialog-modal').dialogModal({
-		topOffset: 0,
-		top: 0,
-		onDocumentClickClose : false,
 		onOkBut: function(event, el, current) {},
 		onCancelBut: function(event, el, current) {},
 		onLoad: function(el, current) {
 			addUsers();
 		},
 		onClose: function(el, current) {}
+	});
+}
+
+function initInviteClick() {
+	$('.online-user button').click(function() {
+		var uid = $(this).data('id');
+		console.log('invite click ', uid);
+		var u = getUser(uid);
+		if (!u) {
+			return;
+		}
+		pomelo.request('arena.arenaHandler.invite', {opuid: u.id, opsid: u.sid}, function(data) {
+			console.log('arenaHandler.invite ', data);
+			if (data.code !== 200) {
+				showTips('ERROR');
+			}
+		});
 	});
 }
 
@@ -235,4 +333,16 @@ function addUsers () {
 		html += '<div id="user-' + users[i].id + '" class="online-user"><span>' + users[i].name + '</span><button data-id=' + users[i].id + '>Invite</button></div>'
 	};
 	$('#dialog-users').html(html);
+	initInviteClick();
 }
+
+function getUser(uid) {
+	for (var i = 0; i < users.length; i++) {
+		if (users[i].id === uid) {
+			return users[i];
+		}
+	}
+	return null;
+}
+
+})()

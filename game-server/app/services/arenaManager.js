@@ -191,7 +191,7 @@ exp.kickOut = function(uid, cb) {
 exp.startArena = function(uid) {
 	var record = getRecord(uid);
 	if (!record) {
-		return true;
+		return false;
 	}
 
 	var arenaId  = record.arenaId;
@@ -201,4 +201,16 @@ exp.startArena = function(uid) {
 		return true;
 	}
 	return false;
+};
+
+exp.invite = function(fromId, toId) {
+	var record = getRecord(fromId);
+	if (!!record) {
+		return false;
+	}
+	record = getRecord(toId);
+	if (!!record) {
+		return false;
+	}
+	return true;
 }
