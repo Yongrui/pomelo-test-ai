@@ -67,22 +67,33 @@ Handler.prototype.start = function(msg, session, next) {
 	next();
 };
 
-Handler.prototype.challenge = function(msg, session, next) {
+Handler.prototype.invite = function(msg, session, next) {
 	var uid = session.uid;
 	var opuid = msg.opuid;
-	if (!uid || opuid) {
+	var opsid = msg.opsid;
+	if (!opsid || !opuid) {
 		next(null, {code: 500});
 		return;
 	}
-	var uids = [uid, opuid];
-	this.app.rpc.manager.userRemote.getUsers(session, uids, function (err, users) {
-		var param = {
-			uid: users[0].id,
-			sid: users[0].sid,
-			opuid: users[1].id,
-			opsid: users[1].sid
-		};
-		var result = arenaManager.createArena(param);
-		next(null, result);
+	// var uids = [uid, opuid];
+	// this.app.rpc.manager.userRemote.getUsers(session, uids, function (err, users) {
+	// 	var param = {
+	// 		uid: users[0].id,
+	// 		sid: users[0].sid,
+	// 		opuid: users[1].id,
+	// 		opsid: users[1].sid
+	// 	};
+	// 	var result = arenaManager.createArena(param);
+	// 	next(null, result);
+	// });
+	
+	var channelService = this.app.get('channelService');
+	channelService.pushMessageByUids("onBeInvited", {from: uid}, [{uid: opuid, sid: opsid}])
+	next(null, {
+		route: msg.route
 	});
+};
+
+Handler.prototype.acceptInvite = function(msg, session, next) {
+	
 };

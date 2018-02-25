@@ -220,7 +220,6 @@ function createRoom () {
 		onOkBut: function(event, el, current) {},
 		onCancelBut: function(event, el, current) {},
 		onLoad: function(el, current) {
-			$('#dialog-up').text(user.name);
 			addUsers();
 		},
 		onClose: function(el, current) {}
