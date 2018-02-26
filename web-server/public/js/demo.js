@@ -101,7 +101,6 @@ function start() {
 
 function onBeInvited(uid) {
 	var u = getUser(uid);
-	console.log('onBeInvited ', u);
 	if (!!u) {
 		showTips('Invited from ' + u.name, function(argument) {
 			pomelo.notify('arena.arenaHandler.acceptInvite', {from: uid});
@@ -111,14 +110,14 @@ function onBeInvited(uid) {
 
 function onAddUser (user) {
 	users.push(user);
-	var html = '<div id="user-' + user.id + '" class="online-user"><span>' + user.name + '</span><button data-id=' + user.id + '>Invite</button></div>'
-	$('#dialog-users').append(html);
-	console.log('onAddUser ', html);
+	var html = '<div class="online-user user-' + user.id + '"><span>' + user.name + '</span><button data-id=' + user.id + '>Invite</button></div>'
+	$('.dialog-users').append(html);
 	initInviteClick();
 }
 
 function onRemoveUser (user) {
-	$('#dialog-users').remove('#user-' + user.id);
+	var cla = '.user-' + user.id;
+	$(cla).remove(cla);
 	for (var i = 0; i < users.length; i++) {
 		if (users[i].id === user.id) {
 			users.splice(i, 1);
@@ -277,7 +276,7 @@ function onConnectServer(data) {
 }
 
 function showTips(content, okcb) {
-	$('#confirm-content').text(content);
+	$('.confirm-content').text(content);
 	$('#confirm-modal').dialogModal({
 		onOkBut: function(event, el) {
 			if (!!okcb) {
@@ -310,7 +309,6 @@ function createRoom () {
 function initInviteClick() {
 	$('.online-user button').click(function() {
 		var uid = $(this).data('id');
-		console.log('invite click ', uid);
 		var u = getUser(uid);
 		if (!u) {
 			return;
@@ -330,9 +328,9 @@ function addUsers () {
 		if (users[i].id === user.id) {
 			continue;
 		}
-		html += '<div id="user-' + users[i].id + '" class="online-user"><span>' + users[i].name + '</span><button data-id=' + users[i].id + '>Invite</button></div>'
+		html += '<div class="online-user user-' + users[i].id + '"><span>' + users[i].name + '</span><button data-id=' + users[i].id + '>Invite</button></div>'
 	};
-	$('#dialog-users').html(html);
+	$('.dialog-users').html(html);
 	initInviteClick();
 }
 
