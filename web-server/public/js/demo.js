@@ -297,11 +297,11 @@ function closeModal() {
 }
 
 function createRoom () {
+	addUsers();
 	$('#dialog-modal').dialogModal({
 		onOkBut: function(event, el, current) {},
 		onCancelBut: function(event, el, current) {},
 		onLoad: function(el, current) {
-			addUsers();
 		},
 		onClose: function(el, current) {}
 	});
