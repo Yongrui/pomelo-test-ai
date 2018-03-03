@@ -95,6 +95,12 @@ Handler.prototype.acceptInvite = function(msg, session, next) {
 	var _this = this;
 	this.app.rpc.manager.userRemote.getUsers(session, [fromId, uid], function(err, users) {
 		if (err) {
+			next();
+			return;
+		}
+
+		if (users.length < 2) {
+			next();
 			return;
 		}
 

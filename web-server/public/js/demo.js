@@ -118,6 +118,7 @@ function onAddUser (user) {
 function onRemoveUser (user) {
 	var cla = '.user-' + user.id;
 	$(cla).remove(cla);
+	initInviteClick();
 	for (var i = 0; i < users.length; i++) {
 		if (users[i].id === user.id) {
 			users.splice(i, 1);
@@ -142,7 +143,7 @@ function onCreateArena(data) {
 function onCloseArena (data) {
 	removeArena();
 	$('#inviteUser').show();
-	$('user-name').text(user.name);
+	$('#user-name').text(user.name);
 	$('#startArena').hide();
 	$('#addEntity').hide();
 }
@@ -301,6 +302,7 @@ function createRoom () {
 		onOkBut: function(event, el, current) {},
 		onCancelBut: function(event, el, current) {},
 		onLoad: function(el, current) {
+			initInviteClick();
 		},
 		onClose: function(el, current) {}
 	});
@@ -331,7 +333,6 @@ function addUsers () {
 		html += '<div class="online-user user-' + users[i].id + '"><span>' + users[i].name + '</span><button data-id=' + users[i].id + '>Invite</button></div>'
 	};
 	$('.dialog-users').html(html);
-	initInviteClick();
 }
 
 function getUser(uid) {
