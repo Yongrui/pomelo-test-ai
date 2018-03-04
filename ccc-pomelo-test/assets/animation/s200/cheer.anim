@@ -1,12 +1,12 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "attack",
+  "_name": "cheer",
   "_objFlags": 0,
   "_rawFiles": null,
-  "_duration": 0.7,
+  "_duration": 0.8,
   "sample": 10,
   "speed": 1,
-  "wrapMode": 1,
+  "wrapMode": 2,
   "curveData": {
     "comps": {
       "cc.Sprite": {
@@ -14,54 +14,54 @@
           {
             "frame": 0,
             "value": {
-              "__uuid__": "1766a99e-dfcb-44d8-b8fd-0a5d1bb50f60"
+              "__uuid__": "bf401e26-58e0-4ed7-8b97-ee91dc49d294"
             }
           },
           {
             "frame": 0.1,
             "value": {
-              "__uuid__": "726f8760-0419-417c-b914-ffdace4cfc57"
+              "__uuid__": "a4726997-4ab1-4646-98d4-6bf42c2dc6fc"
             }
           },
           {
             "frame": 0.2,
             "value": {
-              "__uuid__": "09392851-b215-4fe0-8c1e-f8cb53272f9a"
+              "__uuid__": "41643fc5-35c7-4928-b256-ff3fa16cdd1b"
             }
           },
           {
             "frame": 0.3,
             "value": {
-              "__uuid__": "53543e41-5269-4520-9117-8fdb07ee1b67"
+              "__uuid__": "0ca605f8-556e-4c61-a08c-929c6e635787"
             }
           },
           {
             "frame": 0.4,
             "value": {
-              "__uuid__": "19ba2f33-dcbb-4d4c-8ec4-5c8f672b95e5"
+              "__uuid__": "610070f0-0939-41a4-a63e-260635c1a360"
             }
           },
           {
             "frame": 0.5,
             "value": {
-              "__uuid__": "0056aae3-1587-4f78-b6cf-ee1e5ad05385"
+              "__uuid__": "8c3c68f3-894b-4c55-bd1c-b5d53488b129"
             }
           },
           {
             "frame": 0.6,
             "value": {
-              "__uuid__": "7ff93aef-cab5-4c1f-82a3-3804a8a613a0"
+              "__uuid__": "8c77008d-cf1a-4abd-821c-5438821e4af8"
+            }
+          },
+          {
+            "frame": 0.7,
+            "value": {
+              "__uuid__": "8d446ad0-1991-4104-b2ba-5fdd91da2ff7"
             }
           }
         ]
       }
     }
   },
-  "events": [
-    {
-      "frame": 0.6,
-      "func": "onAttackCompleted",
-      "params": []
-    }
-  ]
+  "events": []
 }

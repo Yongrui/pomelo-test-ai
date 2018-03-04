@@ -12,23 +12,29 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
+        labelUserName: cc.Label,
+        labelUserState: cc.Label,
+        spUserPhoto: cc.Sprite,
+        texUserPhoto: [cc.SpriteFrame]
     },
 
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {},
+    onLoad () {
+    },
 
-    start () {
-        var host = "127.0.0.1";
-        var port = "3010";
-        pomelo.init({
-            host: host,
-            port: port,
-            log: true
-        }, function() {
-            pomelo.request("connector.entryHandler.entry", "hello pomelo", function(data) {
-                console.log(data);
-            });
+    init (userInfo) {
+        this.userInfo = userInfo;
+        this.labelUserName.string = userInfo.name;
+        this.labelUserState.string = userInfo.state === 0 ? '空闲中' : '游戏中';
+        this.userPhoto = this.spUserPhoto.node.getComponent('UserPhoto');
+        this.userPhoto.init(userInfo.photoIdx);
+    },
+
+    invite () {
+        var msg = {opuid: this.userInfo.id, opsid: this.userInfo.sid};
+        pomelo.request('arena.arenaHandler.invite', msg, function(data) {
+            cc.log('arenaHandler.invite ', data);
         });
     }
 

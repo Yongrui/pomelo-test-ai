@@ -1,9 +1,9 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "attack",
+  "_name": "die",
   "_objFlags": 0,
   "_rawFiles": null,
-  "_duration": 0.7,
+  "_duration": 0.9,
   "sample": 10,
   "speed": 1,
   "wrapMode": 1,
@@ -14,54 +14,60 @@
           {
             "frame": 0,
             "value": {
-              "__uuid__": "1766a99e-dfcb-44d8-b8fd-0a5d1bb50f60"
+              "__uuid__": "5a410c61-a8a4-4707-8ecd-731f3464b74a"
             }
           },
           {
             "frame": 0.1,
             "value": {
-              "__uuid__": "726f8760-0419-417c-b914-ffdace4cfc57"
+              "__uuid__": "29581513-1252-4287-9fba-db67bbd7eeea"
             }
           },
           {
             "frame": 0.2,
             "value": {
-              "__uuid__": "09392851-b215-4fe0-8c1e-f8cb53272f9a"
+              "__uuid__": "770e5839-abb7-4007-807d-8a43e849617a"
             }
           },
           {
             "frame": 0.3,
             "value": {
-              "__uuid__": "53543e41-5269-4520-9117-8fdb07ee1b67"
+              "__uuid__": "bfef1112-ece3-4638-973a-726035b2fc7a"
             }
           },
           {
             "frame": 0.4,
             "value": {
-              "__uuid__": "19ba2f33-dcbb-4d4c-8ec4-5c8f672b95e5"
+              "__uuid__": "c83723f0-7ae1-4fde-821c-c54109067880"
             }
           },
           {
             "frame": 0.5,
             "value": {
-              "__uuid__": "0056aae3-1587-4f78-b6cf-ee1e5ad05385"
+              "__uuid__": "aa8943d6-fa0f-4a4d-bf1a-48a110ef7eea"
             }
           },
           {
             "frame": 0.6,
             "value": {
-              "__uuid__": "7ff93aef-cab5-4c1f-82a3-3804a8a613a0"
+              "__uuid__": "b68a5889-349c-415f-a0f0-7085f9cfd116"
+            }
+          },
+          {
+            "frame": 0.7,
+            "value": {
+              "__uuid__": "2b8c3954-2c47-49e0-ae2c-e8054b1b47a7"
+            }
+          },
+          {
+            "frame": 0.8,
+            "value": {
+              "__uuid__": "7c64cd93-aa9e-43e3-ae6a-4f5eb444ec2e"
             }
           }
         ]
       }
     }
   },
-  "events": [
-    {
-      "frame": 0.6,
-      "func": "onAttackCompleted",
-      "params": []
-    }
-  ]
+  "events": []
 }
