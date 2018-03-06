@@ -21,14 +21,12 @@ Action.prototype.doAction = function() {
 	// utils.myPrint('MoveToTarget ', character.entityName);
 
 	if (!target) {
-		utils.myPrint('MoveToTarget no target ', targetId);
 		// target has disappeared or died
 		character.forgetHater(targetId);
 		return bt.RES_FAIL;
 	}
 
 	if (targetId !== character.target) {
-		utils.myPrint('MoveToTarget diff target', targetId, character.target);
 		//target has changed
 		this.blackboard.curTarget = null;
 		this.blackboard.distanceLimit = 0;
@@ -38,7 +36,6 @@ Action.prototype.doAction = function() {
 	}
 
 	if (target.camp === character.camp) {
-		utils.myPrint('MoveToTarget same camp');
 		this.blackboard.curTarget = null;
 		this.blackboard.distanceLimit = 0;
 		this.blackboard.targetPos = null;
@@ -47,7 +44,6 @@ Action.prototype.doAction = function() {
 	}
 
 	if (formula.inRange(character, target)) {
-		utils.myPrint('MoveToTarget inRange ', character.entityName, target.entityName, distance);
 		this.blackboard.arena.timer.abortAction('move', character.entityId);
 		this.blackboard.distanceLimit = 0;
 		this.blackboard.moved = false;
@@ -61,7 +57,6 @@ Action.prototype.doAction = function() {
 		character.move(target.x, target.y, function(err, result) {
 			// utils.myPrint('MoveToTarget- ', target.entityName, target.x, target.y, result);
 			if (err || result === false) {
-				utils.myPrint('MoveToTarget- err');
 				closure.blackboard.moved = false;
 				character.target = null;
 			}
@@ -85,7 +80,6 @@ Action.prototype.doAction = function() {
 			character.move(target.x, target.y, function(err, result) {
 				// utils.myPrint('MoveToTarget= ', target.x, target.y);
 				if (err || result === false) {
-					utils.myPrint('MoveToTarget= err');
 					closure.blackboard.moved = false;
 					character.target = null;
 				}

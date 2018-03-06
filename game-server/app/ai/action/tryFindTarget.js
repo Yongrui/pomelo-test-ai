@@ -16,7 +16,6 @@ Action.prototype.doAction = function() {
 	var character = this.blackboard.curCharacter;
 	var arena = this.blackboard.arena;
 	if (!!character.target) {
-		utils.myPrint('has target ', character.target);
 		return bt.RES_SUCCESS;
 	}
 
@@ -28,7 +27,6 @@ Action.prototype.doAction = function() {
 	}
 	character.target = target;
 	if (!!character.target) {
-		utils.myPrint('find target ', character.target);
 		return bt.RES_SUCCESS;
 	}
 

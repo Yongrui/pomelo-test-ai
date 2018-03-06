@@ -19,9 +19,7 @@ pro.doAction = function() {
 		return bt.RES_SUCCESS;
 	}
 
-	utils.myPrint('1 ~ stand ', character.entityId);
 	if (!this.blackboard.stand) {
-		utils.myPrint('2 ~ stand');
 		this.time = Date.now();
 		if (this.blackboard.moved) {
 			this.blackboard.arena.timer.abortAction('move', character.entityId);
@@ -32,7 +30,6 @@ pro.doAction = function() {
 	} else {
 		var time = Date.now() - this.time;
 		if (time >= 1000) {
-			utils.myPrint('3 ~ stand ', time);
 			this.blackboard.stand = false;
 			return bt.RES_FAIL;
 		}
