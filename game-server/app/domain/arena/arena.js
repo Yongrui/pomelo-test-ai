@@ -63,7 +63,6 @@ Arena.prototype.isRunning = function() {
 };
 
 Arena.prototype.start = function() {
-	this.pushMsg2All('onArenaStart');
 	this.aiManager.start();
 	this.timer.run();
 };
