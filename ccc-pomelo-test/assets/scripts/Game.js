@@ -5,7 +5,7 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
-        btnFight: cc.Button,
+        btnFight: cc.Node,
         arena: cc.Node
     },
 
@@ -80,18 +80,16 @@ cc.Class({
     },
 
     onEntityStand (data) {
-        cc.log('onEntityStand ', data);
         var entityId = data.entityId;
         var entity = self.arena.getEntity(entityId);
         if (!entity) {
             return;
         }
         var node = entity.node;
-        entity.stand({x2: node.x, y2: node.y, x1: data.x, y1: data.y});
+        entity.stand({x2: node.x, y2: node.y, x1: data.x, y1: data.y}, {x: data.x, y: data.y});
     },
 
     onEntityMove (data) {
-        cc.log('onEntityMove ', data);
         var entityId = data.entityId;
         var entity = self.arena.getEntity(entityId);
         if (!entity) {
@@ -101,7 +99,6 @@ cc.Class({
     },
 
     onEntityAttack (data) {
-        cc.log('onEntityAttack ', data);
         var attacker = self.arena.getEntity(data.attacker.entityId);
         var target = self.arena.getEntity(data.target.entityId);
         if (!attacker || !target) {
@@ -111,6 +108,7 @@ cc.Class({
         var result = data.result.result;
         if (result === consts.AttackResult.SUCCESS || result === consts.AttackResult.KILLED) {
             var dir = {x1: data.attacker.x, y1: data.attacker.y, x2: data.target.x, y2: data.target.y};
+            attacker.stand(dir, {x: dir.x1, y: dir.y1});
             attacker.attack(dir);
             target.update({damage: data.result.damage});
 

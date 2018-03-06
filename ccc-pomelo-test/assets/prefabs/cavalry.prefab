@@ -304,7 +304,7 @@
     }
   },
   {
-    "__type__": "cc.Animation",
+    "__type__": "a9b1bGWTtdEprdzPEkIE1ax",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -325,10 +325,10 @@
         "__uuid__": "8981c364-df79-4f8f-8325-929c7d9d5158"
       },
       {
-        "__uuid__": "7135de98-89ea-4c1a-a5c7-efe3c96c57cc"
+        "__uuid__": "fd7658d2-f5c2-4eaf-900f-0dfe89162b4b"
       },
       {
-        "__uuid__": "fd7658d2-f5c2-4eaf-900f-0dfe89162b4b"
+        "__uuid__": "7135de98-89ea-4c1a-a5c7-efe3c96c57cc"
       }
     ],
     "playOnLoad": true
@@ -341,9 +341,7 @@
       "__id__": 1
     },
     "_enabled": true,
-    "anim": {
-      "__id__": 10
-    },
+    "anim": null,
     "barHp": {
       "__id__": 7
     }

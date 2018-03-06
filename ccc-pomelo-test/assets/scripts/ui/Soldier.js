@@ -5,22 +5,11 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
-        anim: cc.Animation,
         barHp: cc.ProgressBar
     },
 
-    onLoad () {
-        this.currentAnim = 'stand';
-        this.attackCallback = null;
-
-        this.anim.on('finished', function (event) {
-            if (event.currentTarget.name === 'attack') {
-                this.playStand();
-                utils.invokeCallback(this.attackCallback);
-            } else if (event.currentTarget.name === 'die') {
-                utils.invokeCallback(this.diedCallback);
-            }
-        }, this);
+    start () {
+        this.anim = this.node.getComponent('SoldierAnimation');
     },
 
     init (data) {
@@ -37,16 +26,9 @@ cc.Class({
         this.walkSpeed = data.walkSpeed;
         this.setHp(data.hp);
 
-        this.moveAction = null;
-
         this.curPath = null;
         this.leftDistance = 0;
         this.leftTime = 0;
-    },
-
-    update (data) {
-        var damage = data.damage || 0;
-        this.setHp(this.hp - damage);
     },
 
     faceTo (dir) {
@@ -56,38 +38,6 @@ cc.Class({
         } else {
             this.node.scaleX = -1;
         }
-    },
-
-    walk (dir) {
-        // this.stopWholeAnimations();
-        this.faceTo(dir);
-        this.playRun();
-    },
-
-    stand (dir) {
-        // this.stopWholeAnimations();
-        if (!!dir) {
-            this.faceTo(dir);
-        }
-        this.playStand();
-    },
-
-    attack (dir, cb) {
-        // this.stopWholeAnimations();
-        this.faceTo(dir);
-        this.playAttack();
-        this.node.x = dir.x1;
-        this.node.y = dir.y1;
-        this.attackCallback = cb;
-    },
-
-    died (dir, cb) {
-        // this.stopWholeAnimations();
-        if (!!dir) {
-            this.faceTo(dir);
-        }
-        this.playDie();
-        this.diedCallback = cb;
     },
 
     movePath (path, speed) {
@@ -126,7 +76,6 @@ cc.Class({
         var distance = utils.distance(start.x, start.y, end.x, end.y);
         var time = Math.floor(this.leftTime * distance / this.leftDistance) || 1;
         var self = this;
-        cc.log('move path ', distance, time, self.leftDistance, self.leftTime, self.walkSpeed);
 
         this._move(start.x, start.y, end.x, end.y, time, function(dt) {
             index++;
@@ -151,10 +100,9 @@ cc.Class({
         this.walk({x1: sx, y1: sy, x2: ex, y2: ey});
         this.node.x = sx;
         this.node.y = sy;
-        this.moveAction = cc.moveTo(time / 1000, cc.p(ex, ey));
+        var moveAction = cc.moveTo(time / 1000, cc.p(ex, ey));
         var cbAction = cc.callFunc(cb, this, time);
-        this.node.runAction(cc.sequence(this.moveAction, cbAction));
-        cc.log('move ', sx, sy, ex, ey, time);
+        this.node.runAction(cc.sequence(moveAction, cbAction));
     },
 
     _checkPathStep (index) {
@@ -162,82 +110,50 @@ cc.Class({
     },
 
     clearPath () {
-        // this.stopMove();
+        this.stopMove();
         this.curPath = null;
         this.leftDistance = 0;
         this.leftTime = 0;
     },
 
-    stopWholeAnimations () {
-        this.stopMove();
-        this.stopStand();
-        this.stopAttack();
-        this.stopCheer();
-        this.stopDie();
-    },
-
     stopMove () {
-        // if (!!this.moveAction) {
-        //     this.node.stopAction(this.moveAction);
-        //     this.moveAction = null;
-        // }
         this.node.stopAllActions();
-        // this.stopWalk();
     },
 
-    stopWalk () {
-        this.anim.stop('run');
+    walk (dir) {
+        this.faceTo(dir);
+        this.anim.playRun();
     },
 
-    stopStand () {
-        this.anim.stop('stand');
-    },
-
-    stopAttack () {
-        this.anim.stop('attack');
-    },
-
-    stopCheer () {
-        this.anim.stop('cheer');
-    },
-
-    stopDie () {
-        this.anim.stop('die');
-    },
-
-    playStand: function() {
-        if (this.currentAnim !== 'stand') {
-            cc.log('playStand !!!!');
-            this.currentAnim = 'stand';
-            this.anim.play(this.currentAnim);
+    stand (dir, pos) {
+        if (!!dir) {
+            this.faceTo(dir);
         }
+        this.anim.playStand();
+        this.node.x = pos.x;
+        this.node.y = pos.y;
     },
 
-    playRun: function() {
-        if (this.currentAnim !== 'run') {
-            cc.log('playRun !!!!');
-            this.currentAnim = 'run';
-            this.anim.play(this.currentAnim);
+    attack (dir, cb) {
+        this.stopMove();
+        this.faceTo(dir);
+        this.anim.playAttack(cb);
+    },
+
+    died (dir, cb) {
+        if (!!dir) {
+            this.faceTo(dir);
         }
-    },
-
-    playAttack: function() {
-        this.anim.play('attack');
-    },
-
-    playDie: function() {
-        this.anim.play('die');
-    },
-
-    playCheer: function() {
-        if (self.currentAnim !== 'cheer') {
-            this.currentAnim = 'cheer';
-            this.anim.play(this.currentAnim);
-        }
+        this.anim.playDie(cb);
     },
 
     setHp: function(hp) {
         this.hp = hp;
         this.barHp.progress = hp / this.maxHp;
+    },
+
+    update (data) {
+        var damage = data.damage || 0;
+        this.setHp(this.hp - damage);
     }
 });
