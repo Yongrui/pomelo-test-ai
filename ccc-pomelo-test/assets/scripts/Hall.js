@@ -6,7 +6,8 @@ cc.Class({
         spUserPhoto: cc.Sprite,
         labelUserName: cc.Label,
         panelInvited: cc.Node,
-        labelInvitedContent: cc.Label
+        labelInvitedContent: cc.Label,
+        panelConfirm: cc.Node
     },
 
     onLoad () {
@@ -38,11 +39,17 @@ cc.Class({
     initHandler () {
         pomelo.on('onBeInvited', self.onBeInvited);
         pomelo.on('onCreateArena', self.onCreateArena);
+        pomelo.on('disconnect', self.onDisconnect);
     },
 
     delHandler () {
         pomelo.off('onBeInvited', self.onBeInvited);
         pomelo.off('onCreateArena', self.onCreateArena);
+        pomelo.off('disconnect', self.onDisconnect);
+    },
+
+    onDisconnect () {
+        self.panelConfirm.active = true;
     },
 
     onBeInvited (data) {

@@ -6,7 +6,8 @@ cc.Class({
 
     properties: {
         btnFight: cc.Node,
-        arena: cc.Node
+        arena: cc.Node,
+        panelConfirm: cc.Node
     },
 
     onLoad () {
@@ -31,6 +32,7 @@ cc.Class({
         pomelo.on('onAttack', self.onEntityAttack);
         pomelo.on('onAddEntities', self.onAddEntities);
         pomelo.on('onRemoveEntities', self.onRemoveEntities);
+        pomelo.on('disconnect', self.onDisconnect);
     },
 
     delHandler () {
@@ -41,6 +43,11 @@ cc.Class({
         pomelo.off('onAttack', self.onEntityAttack);
         pomelo.off('onAddEntities', self.onAddEntities);
         pomelo.off('onRemoveEntities', self.onRemoveEntities);
+        pomelo.off('disconnect', self.onDisconnect);
+    },
+
+    onDisconnect () {
+        self.panelConfirm.active = true;
     },
 
     fight () {
