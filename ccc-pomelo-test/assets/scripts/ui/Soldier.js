@@ -10,6 +10,17 @@ cc.Class({
     },
 
     onLoad () {
+        this.currentAnim = 'stand';
+        this.attackCallback = null;
+
+        this.anim.on('finished', function (event) {
+            if (event.currentTarget.name === 'attack') {
+                this.playStand();
+                utils.invokeCallback(this.attackCallback);
+            } else if (event.currentTarget.name === 'die') {
+                utils.invokeCallback(this.diedCallback);
+            }
+        }, this);
     },
 
     init (data) {
@@ -67,6 +78,7 @@ cc.Class({
         this.playAttack();
         this.node.x = dir.x1;
         this.node.y = dir.y1;
+        this.attackCallback = cb;
     },
 
     died (dir, cb) {
@@ -75,6 +87,7 @@ cc.Class({
             this.faceTo(dir);
         }
         this.playDie();
+        this.diedCallback = cb;
     },
 
     movePath (path, speed) {
@@ -86,7 +99,7 @@ cc.Class({
             return;
         }
 
-        this.stopWholeAnimations();
+        this.stopMove();
         this.clearPath();
 
         this.curPath = path;
@@ -127,7 +140,7 @@ cc.Class({
                 self._movePathStep(index); 
                 return;
             }
-            self.stopWholeAnimations();
+            self.stopMove();
             self.clearPath();
             self.stand({x1: start.x, y1: start.y, x2: end.x, y2: end.y});
         });
@@ -193,21 +206,19 @@ cc.Class({
     },
 
     playStand: function() {
-        if (!!this.anim.currentClip && this.anim.currentClip.name === 'stand') {
-        cc.log('playStand ', this.anim.currentClip.name);
-            return;
+        if (this.currentAnim !== 'stand') {
+            cc.log('playStand !!!!');
+            this.currentAnim = 'stand';
+            this.anim.play(this.currentAnim);
         }
-        cc.log('playStand !!!!');
-        this.anim.play('stand');
     },
 
     playRun: function() {
-        if (!!this.anim.currentClip && this.anim.currentClip.name === 'run') {
-        cc.log('playRun ', this.anim.currentClip.name);
-            return;
+        if (this.currentAnim !== 'run') {
+            cc.log('playRun !!!!');
+            this.currentAnim = 'run';
+            this.anim.play(this.currentAnim);
         }
-        cc.log('playRun !!!!');
-        this.anim.play('run');
     },
 
     playAttack: function() {
@@ -219,11 +230,10 @@ cc.Class({
     },
 
     playCheer: function() {
-        if (!!this.anim.currentClip && this.anim.currentClip.name === 'cheer') {
-        cc.log('playCheer ', this.anim.currentClip.name);
-            return;
+        if (self.currentAnim !== 'cheer') {
+            this.currentAnim = 'cheer';
+            this.anim.play(this.currentAnim);
         }
-        this.anim.play('cheer');
     },
 
     setHp: function(hp) {
