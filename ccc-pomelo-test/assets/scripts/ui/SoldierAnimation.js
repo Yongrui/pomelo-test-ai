@@ -43,34 +43,38 @@ cc.Class({
         }
     },
 
-    playStand: function() {
+    playStand () {
         if (this.currentAnim !== 'stand') {
             this.currentAnim = 'stand';
             this.play(this.currentAnim);
         }
     },
 
-    playRun: function() {
+    playRun () {
         if (this.currentAnim !== 'run') {
             this.currentAnim = 'run';
             this.play(this.currentAnim);
         }
     },
 
-    playAttack: function(cb) {
+    playAttack (cb) {
         this.play('attack');
         this.attackCallback = cb;
     },
 
-    playDie: function(cb) {
+    playDie (cb) {
         this.play('die');
         this.diedCallback = cb;
     },
 
-    playCheer: function() {
+    playCheer () {
         if (self.currentAnim !== 'cheer') {
             this.currentAnim = 'cheer';
             this.play(this.currentAnim);
         }
+    },
+
+    isRunning () {
+        return this.currentAnim === 'run';
     }
 });

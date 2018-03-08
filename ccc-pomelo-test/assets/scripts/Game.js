@@ -117,7 +117,7 @@ cc.Class({
             var dir = {x1: data.attacker.x, y1: data.attacker.y, x2: data.target.x, y2: data.target.y};
             attacker.stand(dir, {x: dir.x1, y: dir.y1});
             attacker.attack(dir);
-            target.update({damage: data.result.damage});
+            target.updateHp({damage: data.result.damage});
 
             if (result === consts.AttackResult.KILLED) {
                 target.died();

@@ -8,8 +8,9 @@ cc.Class({
         barHp: cc.ProgressBar
     },
 
-    start () {
+    onLoad () {
         this.anim = this.node.getComponent('SoldierAnimation');
+        this.tick = 0;
     },
 
     init (data) {
@@ -91,7 +92,7 @@ cc.Class({
             }
             self.stopMove();
             self.clearPath();
-            self.stand({x1: start.x, y1: start.y, x2: end.x, y2: end.y});
+            self.stand({x1: start.x, y1: start.y, x2: end.x, y2: end.y}, end);
         });
     },
 
@@ -152,8 +153,19 @@ cc.Class({
         this.barHp.progress = hp / this.maxHp;
     },
 
-    update (data) {
+    updateHp (data) {
         var damage = data.damage || 0;
         this.setHp(this.hp - damage);
+    },
+
+    update (dt) {
+        this.tick += dt;
+        if (this.anim.isRunning() && this.tick > 0.3) {
+            var zIndex = 1000 - Math.floor(this.node.y)
+            if (zIndex !== this.node.zIndex) {
+                this.tick = 0;
+                this.node.zIndex = zIndex;
+            }
+        }
     }
 });
