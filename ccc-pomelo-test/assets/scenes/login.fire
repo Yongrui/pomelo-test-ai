@@ -24,7 +24,7 @@
     "_active": true,
     "_components": [],
     "_prefab": null,
-    "_id": "2db474b6-a39c-44a1-a7d2-e19f2ed4b3ce",
+    "_id": "180f2d08-a12d-4d63-86b9-b50d6d360439",
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
@@ -73,7 +73,7 @@
       }
     ],
     "_prefab": null,
-    "_id": "ad3RFkYfxJT7tTmNHQ5bKn",
+    "_id": "f1Gg0uF6tIIJ5+EbEqGbH0",
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
@@ -111,7 +111,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "bg",
+    "_name": "bg1",
     "_objFlags": 0,
     "_parent": {
       "__id__": 2
@@ -125,7 +125,7 @@
       }
     ],
     "_prefab": null,
-    "_id": "20iOsPeA9OfpZLL67giBX0",
+    "_id": "390r14egRFAaOdWuj7CNWQ",
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
@@ -189,7 +189,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "loading",
+    "_name": "connecting",
     "_objFlags": 0,
     "_parent": {
       "__id__": 2
@@ -206,7 +206,7 @@
       }
     ],
     "_prefab": null,
-    "_id": "89oVa9TFpCnZZvN0TViW0A",
+    "_id": "fe8o3WeYxAZrdJVrhEKhsi",
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
@@ -223,7 +223,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 234.68,
+      "width": 282,
       "height": 40
     },
     "_rotationX": 0,
@@ -233,7 +233,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -198
+      "y": -159
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -258,7 +258,7 @@
     "_N$file": null,
     "_isSystemFontUsed": true,
     "_spacingX": 0,
-    "_N$string": "正在连接......",
+    "_N$string": "正在连接。。。",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
@@ -279,7 +279,7 @@
       "b": 0,
       "a": 255
     },
-    "_width": 4
+    "_width": 1
   },
   {
     "__type__": "cc.Canvas",
@@ -313,7 +313,7 @@
       }
     ],
     "_prefab": null,
-    "_id": "59wC/A1/RI5YlWvv30g2UI",
+    "_id": "fb64CEZOxExazEbSVz9WkF",
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
@@ -357,7 +357,7 @@
       "__id__": 9
     },
     "_enabled": true,
-    "hose": "127.0.0.1",
+    "host": "127.0.0.1",
     "port": "3010"
   }
 ]
