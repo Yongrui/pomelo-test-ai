@@ -16,6 +16,7 @@ var Move = function(opts) {
 	this.pos = this.path[0];
 	this.index = 1;
 	this.tickNumber = 0;
+	this.entity.isMoving = true;
 };
 
 util.inherits(Move, Action);

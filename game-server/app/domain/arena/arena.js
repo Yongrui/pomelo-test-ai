@@ -18,6 +18,7 @@ function Arena (opts) {
 	this.players = {};
 	this.watchers = {};
 	this.entities = {};
+	this.bullets = {};
 	this.channel = null;
 
 	this.aiManager = ai.createManager({arena: this});
@@ -127,17 +128,21 @@ Arena.prototype.addEntity = function(e) {
 	}
 
 	e.arena = this;
-
 	entities[e.entityId] = e;
 
-	var enemies = this.getEnemyCampEntities(e);
-	for (var i = 0; i < enemies.length; i++) {
-		e.increaseHateFor(enemies[i].entityId, 5);
-		enemies[i].increaseHateFor(e.entityId, 5);
+	if (e.type === consts.EntityType.SOLDIER) {
+		var enemies = this.getEnemyCampEntities(e);
+		for (var i = 0; i < enemies.length; i++) {
+			e.increaseHateFor(enemies[i].entityId, 5);
+			enemies[i].increaseHateFor(e.entityId, 5);
+		}
+		eventManager.addCharaterEvent(e);
+		this.aiManager.addCharacters([e]);
+	} else if (e.type === consts.EntityType.BULLET) {
+		this.bullets[e.entityId] = e;
+		eventManager.addBulletEvent(e);
+		e.fire();
 	}
-
-	eventManager.addCharaterEvent(e);
-	this.aiManager.addCharacters([e]);
 
 	this.pushMsg2All('onAddEntities', {entities: [e]}, null);
 	return true;

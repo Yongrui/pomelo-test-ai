@@ -22,6 +22,17 @@ Timer.prototype.close = function() {
 
 Timer.prototype.tick = function() {
 	var arena = this.arena;
+
+	for (var id in arena.bullets) {
+		var bullet = arena.entities[id];
+		bullet.update();
+
+		if (bullet.died) {
+			arena.pushMsg2All('onRemoveEntities', {entities: [id]});
+			arena.removeEntity(id);
+		}
+	}
+
 	arena.actionManager.update();
 	arena.aiManager.update();
 

@@ -13,7 +13,8 @@ module.exports = {
 		PLAYER: 'player',
 		SOLDIER: 'soldier',
 		HERO: 'hero',
-		WATCHER: 'watcher'
+		WATCHER: 'watcher',
+		BULLET: 'bullet'
 	},
 	CampType: {
 		WE: 'we',
