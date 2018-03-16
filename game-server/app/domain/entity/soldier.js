@@ -2,12 +2,15 @@ var util = require('util');
 var EntityType = require('../../consts/consts').EntityType;
 var Character = require('./character');
 var fightSkill = require('./../fightskill');
+var utils = require('../../util/utils');
 
 var Soldier = function (opts) {
 	Character.call(this, opts);
 	this.type = EntityType.SOLDIER;
 	this.totalAttackValue = this.getAttackValue();
 	this.totalDefenceValue = this.getDefenceValue();
+
+	this.curSkill = 2;
 
 	this.initFightSkill();
 };
@@ -17,9 +20,11 @@ util.inherits(Soldier, Character);
 module.exports = Soldier;
 
 Soldier.prototype.initFightSkill = function() {
+	utils.myPrint('initFightSkill ', this.curSkill);
 	if (!this.fightSkills[this.curSkill]) {
-		var skill = fightSkill.create({skillId: 1, level: 1, playerId: this.entityId, type: 'attack'});
+		var skill = fightSkill.create({skillId: 2, level: 1, playerId: this.entityId, type: 'remote'});
 		this.fightSkills[this.curSkill] = skill;
+		utils.myPrint('2 ~ initFightSkill ', skill);
 	}
 };
 

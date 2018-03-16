@@ -21,7 +21,7 @@ var Brain = function(blackboard) {
 		tryAction: new TryAttack({
 			blackboard: blackboard, 
 			getSkillId: function(bb) {
-				return 1; //normal attack
+				return 2; //normal attack
 			}
 		})
 	});

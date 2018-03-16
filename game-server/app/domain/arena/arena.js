@@ -138,13 +138,14 @@ Arena.prototype.addEntity = function(e) {
 		}
 		eventManager.addCharaterEvent(e);
 		this.aiManager.addCharacters([e]);
+		this.pushMsg2All('onAddEntities', {entities: [e]}, null);
 	} else if (e.type === consts.EntityType.BULLET) {
 		this.bullets[e.entityId] = e;
 		eventManager.addBulletEvent(e);
+		this.pushMsg2All('onAddEntities', {entities: [e]}, null);
 		e.fire();
 	}
 
-	this.pushMsg2All('onAddEntities', {entities: [e]}, null);
 	return true;
 };
 
@@ -154,19 +155,22 @@ Arena.prototype.removeEntity = function(entityId) {
 	var e = entities[entityId];
 	if (!e) return true;
 
-	this.aiManager.removeCharacter(e.entityId);
 	this.actionManager.abortAllAction(entityId);
 
-	e.forEachEnemy(function (enemy) {
-		enemy.forgetHater(e.entityId);
-	});
-
-	e.forEachHater(function (hater) {
-		hater.forgetEnemy(e.entityId);
-	});
+	if (e.type === consts.EntityType.SOLDIER) {
+		this.aiManager.removeCharacter(e.entityId);
+		e.forEachEnemy(function (enemy) {
+			enemy.forgetHater(e.entityId);
+		});
+	
+		e.forEachHater(function (hater) {
+			hater.forgetEnemy(e.entityId);
+		});
+	}
 
 	this.pushMsg2All('onRemoveEntities', {entities: [entityId]}, null);
 
+	delete this.bullets[entityId];
 	delete entities[entityId];
 };
 

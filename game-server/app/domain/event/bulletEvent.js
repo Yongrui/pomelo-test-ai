@@ -14,7 +14,7 @@ module.exports.addEventForBullet = function(bullet) {
 		});
 
 		if (arena.timer.addAction(action)) {
-			arena.pushMsg2All('onMove', {
+			arena.pushMsg2All('onFire', {
 				entityId: bullet.entityId,
 				path: paths,
 				speed: speed

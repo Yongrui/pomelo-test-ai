@@ -10,7 +10,7 @@ var Bullet = function(opts) {
 	this.y = opts.y;
 	this.speed = opts.speed;
 	this.attackerId = opts.attacker;
-	this.targetId = opts.attacker;
+	this.targetId = opts.target;
 	this.damage = opts.damage;
 	this.died = false;
 	this.isMoving = false;
@@ -45,17 +45,17 @@ Bullet.prototype.update = function() {
 
 	if (!this.isMoving) {
 		var attacker = this.arena.getEntity(this.attackerId);
-		target.hit(attacker, damageValue);
+		target.hit(attacker, this.damage);
 		this.died = true;
 		return;
 	}
 
-	if (this.destX !== target.x || this.destY !== target.y) {
-		this.destX = target.x;
-		this.destY = target.y;
-		var paths = [{x: this.x, y: this.y}, {x: target.x, y: target.y}];
-		this.emit('fire', {bullet: this, paths: paths});
-	}
+	// if (this.destX !== target.x || this.destY !== target.y) {
+	// 	this.destX = target.x;
+	// 	this.destY = target.y;
+	// 	var paths = [{x: this.x, y: this.y}, {x: target.x, y: target.y}];
+	// 	this.emit('fire', {bullet: this, paths: paths});
+	// }
 };
 
 Bullet.prototype.toJSON = function() {

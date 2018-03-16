@@ -143,7 +143,7 @@ exp.randomEntity = function(uid) {
 	}
 	data.x = utils.randomMN(100, 850);
 	data.y = utils.randomMN(100, 450);
-	data.attackRange = 5;
+	data.attackRange = 30;
 	data.camp = camp;
 	data.arena = arenaObj;
 	var e = new Soldier(data);

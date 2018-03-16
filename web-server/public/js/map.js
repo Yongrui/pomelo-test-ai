@@ -60,11 +60,13 @@ p.calcPosByTile = function (tx, ty) {
 };
 
 p.addEntity = function (entity) {
+	console.log('addEntity ', entity.id);
 	this.entities[entity.id] = entity;
 	this.addChild(entity);
 };
 
 p.removeEntity = function (entityId) {
+	console.log('removeEntity ', entityId);
 	var entity = this.entities[entityId];
 	this.removeChild(entity);
 	delete this.entities[entityId];

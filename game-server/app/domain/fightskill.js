@@ -2,6 +2,7 @@ var util = require('util');
 var formula = require('../consts/formula');
 var consts = require('../consts/consts');
 var Bullet = require('./entity/bullet');
+var utils = require('../util/utils');
 
 var attack = function(attacker, target, skill) {
 	if (attacker.entityId === target.entityId) {
@@ -72,6 +73,7 @@ var FightSkill = function(opts) {
 
 FightSkill.prototype.judge = function(attacker, target) {
 	var range = attacker.range + attacker.attackRange + target.range
+	utils.myPrint('judge ', attacker.range, attacker.attackRange, target.range, range);
 	if (!formula.inRange(attacker, target, range)) {
 		return {
 			result: consts.AttackResult.NOT_IN_RANGE,
@@ -127,6 +129,9 @@ RemoteAttackSkill.prototype.use = function(attacker, target) {
 var create = function(skill) {
 	if (skill.type === 'attack'){
 		return new AttackSkill(skill);
+	}
+	else if (skill.type === 'remote') {
+		return new RemoteAttackSkill(skill);
 	}
 	throw new Error('error skill type in create skill: ' + skill);
 };

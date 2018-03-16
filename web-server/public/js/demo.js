@@ -43,6 +43,9 @@ $(function() {
 		onEntityMove(data);
 	});
 
+	pomelo.on('onFire', function(data) {
+		onBulletFire(data);
+	});
 
 	pomelo.on('onAttack', function(data) {
 		console.log('onAttack', data);
@@ -90,6 +93,24 @@ $(function() {
 		onCreateArena(data);
 	});
 });
+
+function onBulletFire(data) {
+	console.log('onBulletFire ', data);
+	if (!arena) {
+		return;
+	}
+	var entityId = data.entityId;
+	var entity = arena.getEntity(entityId);
+	console.log('2 ~ onBulletFire ', entity);
+	if (!entity) {
+		return;
+	}
+	var path = data.path;
+	if (!path || path.length <= 1) {
+		return;
+	}
+	entity.fire(path, data.speed);
+}
 
 function randomEntity() {
 	pomelo.notify('arena.arenaHandler.randomEntity');
@@ -211,6 +232,14 @@ function onRemoveEntities(entities) {
 }
 
 function buildEntity(data) {
+	if (data.type == 'bullet') {
+		return new Bullet({
+			id: data.id,
+			x: data.x,
+			y: data.y,
+			speed: data.speed
+		});
+	}
 	var color = data.camp == 'enemy' ? 'green' : 'red';
 	var e = new Ball({
 		id: data.entityId,
