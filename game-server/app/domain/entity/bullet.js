@@ -34,7 +34,7 @@ Bullet.prototype.fire = function() {
 	this.destX = target.x;
 	this.destY = target.y;
 	var paths = [{x: attacker.x, y: attacker.y}, {x: target.x, y: target.y}];
-	this.emit('fire', {bullet: this, paths: paths});
+	// this.emit('fire', {bullet: this, paths: paths});
 };
 
 Bullet.prototype.update = function() {

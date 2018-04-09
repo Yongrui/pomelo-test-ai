@@ -30,7 +30,7 @@ Action.prototype.doAction = function() {
 		return bt.RES_SUCCESS;
 	}
 
-	this.blackboard.arena.close();
+	// this.blackboard.arena.close();
 
 	return bt.RES_FAIL;
 };
