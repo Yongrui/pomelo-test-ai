@@ -10,7 +10,7 @@ var Soldier = function (opts) {
 	this.totalAttackValue = this.getAttackValue();
 	this.totalDefenceValue = this.getDefenceValue();
 
-	this.curSkill = 2;
+	// this.curSkill = 2;
 
 	this.initFightSkill();
 };
@@ -22,7 +22,8 @@ module.exports = Soldier;
 Soldier.prototype.initFightSkill = function() {
 	utils.myPrint('initFightSkill ', this.curSkill);
 	if (!this.fightSkills[this.curSkill]) {
-		var skill = fightSkill.create({skillId: 2, level: 1, playerId: this.entityId, type: 'remote'});
+		var curSkill = this.curSkill;
+		var skill = fightSkill.create({skillId: curSkill, level: 1, playerId: this.entityId, type: 'attack'});
 		this.fightSkills[this.curSkill] = skill;
 		utils.myPrint('2 ~ initFightSkill ', skill);
 	}

@@ -73,7 +73,7 @@ var FightSkill = function(opts) {
 
 FightSkill.prototype.judge = function(attacker, target) {
 	var range = attacker.range + attacker.attackRange + target.range
-	utils.myPrint('judge ', attacker.range, attacker.attackRange, target.range, range);
+	// utils.myPrint('judge ', attacker.range, attacker.attackRange, target.range, range);
 	if (!formula.inRange(attacker, target, range)) {
 		return {
 			result: consts.AttackResult.NOT_IN_RANGE,
